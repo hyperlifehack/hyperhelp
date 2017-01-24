@@ -1,0 +1,328 @@
+* {
+	margin: 0;
+}
+html {
+	background-color: black;
+}
+body {
+	font-family: arial;
+}
+
+ul li {
+	line-height: 200%;
+}
+.centered {
+	float: none;
+	max-height: 100%;
+	left: 0;
+	margin: auto;
+	position: relative;
+	top: 0;
+	max-width: 1024px;
+}
+.profilepicture {
+	max-height: 150px;
+	max-width: 100%;
+}
+#parent {
+	text-align: center;
+}
+
+.status_error {
+	border: 1px solid red;
+	border-radius: 25px;
+}
+.status {
+	border-radius: 25px;
+    border: 1px solid #d3d3d3 !important;
+}
+
+.boxShadows {
+	box-shadow: 0 0 30px 0 rgba(50, 50, 50, 0.34);
+}
+
+#headline {
+	background-color: rgba(220, 20, 60, 0.8);
+    border-radius: 25px;
+    box-shadow: 0 0 6px #ffffff;
+    text-shadow: 0px 0px 9px rgba(150, 150, 150, 1);
+    color: white;
+    font-family: comic sans ms;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    max-width: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+#content {
+	width: 100%;
+	position: relative;
+}
+
+.border {
+    border: 1px solid #d3d3d3 !important;
+    border-radius: 25px;
+    box-shadow: 0 0 6px #ffffff;
+    color: white;
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    position: relative;
+    width: 100%;
+}
+
+.element {
+    float: left;
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.element_select {
+    float: left;
+    border: 1px solid white;
+    padding: 10px;
+    margin: 0 5px 0 0;
+    color: crimson;
+}
+
+a:visited  {
+    color: crimson;
+}
+
+.element_content {
+    float: left;
+    max-width: 100%;
+    padding-left: 5%;
+    width: 90%;
+    position: relative;
+}
+
+.explanation {
+    background-color: white;
+    border: 2px solid;
+    border-radius: 25px;
+    color: black;
+    display: none;
+    float: left;
+    max-width: 95%;
+    padding: 10px;
+    position: relative;
+}
+
+.Meldung {
+    display: none;
+    float: left;
+    min-width: 99%;
+    position: relative;
+}
+.Meldung {
+    background-color: #ffd071;
+    border: 2px solid;
+    border-radius: 25px;
+    float: left;
+    min-width: 98%;
+    padding: 9px;
+    position: relative;
+}
+.Meldung input {
+    min-width: 98%;
+}
+
+.contactInfo {
+    background-color: #85eaff;
+    border: 2px solid;
+    border-radius: 25px;
+    float: left;
+    min-width: 98%;
+    padding: 9px;
+    position: relative;
+}
+
+.contactInfo input {
+    min-width: 99%;
+}
+
+button {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+	background-color: #5bc0de;
+    border-color: #46b8da;
+    color: #fff;
+}
+
+.button {
+    -moz-user-select: none;
+    background-color: rgba(0, 84, 114, 0.8);
+    border: 1px solid #46b8da;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+}
+
+.button_div {
+    -moz-user-select: none;
+    background-color: rgba(0, 84, 114, 0.8);
+    border: 1px solid #46b8da;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.contact {
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+.buttonMelden1 {
+	left: 20px;
+	position: relative;
+	float: left;
+}
+.buttonMelden2 {
+	left: 20px;
+	position: relative;
+	float: left;
+}
+.buttonMitmachen {
+	right: 20px;
+	position: relative;
+	float: right;
+}
+
+textarea {
+	min-width: 98%;
+	min-height: 98%; 
+}
+
+.title {
+	font-size: 24px;
+	text-shadow: 0px 0px 9px rgba(150, 150, 150, 1);
+	width: 100%;
+    border-radius: 25px;
+    box-shadow: 0 0 6px #ffffff;
+    padding-bottom: 1%;
+    padding-top: 1%;
+}
+
+.contactInfo {
+	display: none;
+}
+
+.btn-warning {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+    color: #fff;
+}
+
+#AnzeigeAufgebenForm {
+	display: none;
+}
+
+.hidden {
+	display: none;
+}
+
+.foto {
+    animation: shadowThrob 0.9s 4;
+    animation-direction: alternate;
+    -webkit-animation: shadowThrob 0.9s ease-out 4;
+    -webkit-animation-direction: alternate;
+    box-shadow: 0 0 80px 10px rgba(255,255,255, 0.9);
+}
+
+
+@keyframes shadowThrob {
+	from {box-shadow: 0 0 80px 10px rgba(255,255,255, 0.9);}
+	to {box-shadow: 0 0 6px 10px rgba(0,0,0, 0.2);}
+}
+@-webkit-keyframes shadowThrob {
+	from {box-shadow: 0 0 80px 10px rgba(255,255,255, 0.9);}
+	to {box-shadow: 0 0 6px 10px rgba(0,0,0, 0.2);}
+}
+
+.clickable {
+	text-decoration: underline;
+	cursor: pointer; 	
+}
+
+.table {
+	float: left;
+	position: relative;
+	width: 100%;
+}
+
+/* 50% wide column creates layout with 2 rows */
+.column50 {
+	float: left;
+	position: relative;
+	width: 49%;
+	min-width: 293px;
+    padding-bottom: 1%;
+    padding-top: 1%;
+}
+
+/* 100% wide column creates layout with 1 row */
+.column100 {
+    float: left;
+    min-width: 293px;
+    position: relative;
+    width: 100%;
+    padding-bottom: 1%;
+    padding-top: 1%;
+}
+
+/* 33% wide column creates layout with 3 row */
+.column33 {
+	float: left;
+	position: relative;
+	width: 32%;
+	min-width: 293px;
+    padding-bottom: 1%;
+    padding-top: 1%;
+}
+
+.line {
+	float: left;
+	position: relative;
+	width: 100%;
+}
+
+.prop {
+	float: left;
+	position: relative;
+	text-align: left;
+}
+
+.value {
+	float: right;
+	position: relative;
+	width: 50%;
+	text-align: left;
+}
+
+#map {
+	position: relative;
+	width: 100%%;
+	display: none;
+}
