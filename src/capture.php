@@ -19,7 +19,7 @@ if($logged_in_user)
 {
 	if(isset($_REQUEST['action']))
 	{
-		/* neuen eintrag erfassen */
+		/* capture action */
 		if($_REQUEST['action'] == "capture")
 		{
 			$NewRecord = config::get('lib_mysqli_commands_instance')->newRecord("records");
@@ -145,7 +145,7 @@ if($refresh_page)
 							<a style="color: white;" href="logout.php">(logout)</a>
 						</div>
 						<div class="element_content">
-							<form class="form-signin" action="capture.php#capture">
+							<form class="form-signin" action="capture.php">
 								<input name="action" value="capture" hidden>
 								<h2>Who?</h2>
 								<h1>
@@ -181,12 +181,12 @@ if($refresh_page)
 												<div>
 												Minutes:
 												</div>
-												<a href="capture.php?howmany_minutes=10#capture"><div class="element_select">10</div></a>
-												<a href="capture.php?howmany_minutes=20#capture"><div class="element_select">20</div></a>
-												<a href="capture.php?howmany_minutes=30#capture"><div class="element_select">30</div></a>
-												<a href="capture.php?howmany_minutes=45#capture"><div class="element_select">45</div></a>
-												<a href="capture.php?howmany_minutes=60#capture"><div class="element_select">60</div></a>
-												<a href="capture.php?howmany_minutes=120#capture"><div class="element_select">120</div></a>
+												<a href="capture.php?howmany_minutes=10"><div class="element_select">10</div></a>
+												<a href="capture.php?howmany_minutes=20"><div class="element_select">20</div></a>
+												<a href="capture.php?howmany_minutes=30"><div class="element_select">30</div></a>
+												<a href="capture.php?howmany_minutes=45"><div class="element_select">45</div></a>
+												<a href="capture.php?howmany_minutes=60"><div class="element_select">60</div></a>
+												<a href="capture.php?howmany_minutes=120"><div class="element_select">120</div></a>
 											</div>
 											<div class="value">
 												<div id="minuten">
@@ -207,11 +207,18 @@ if($refresh_page)
 
 												$users = config::get('lib_mysqli_commands_instance')->users(); // get all users
 												
+												foreach($users as $key => $user) {
+													echo '<a href="capture.php?to_whom_select='.$user->username.'"><div class="element_select">'.$user->username.'</div></a>';
+												}
+												?>
+											</div>
+										<div class="line">
+											<input name="to_whom" id="to_whom" placeholder="username" value="<?php remember_value("to_whom_select") ?>" type="text" style="width: 100%;"/>
+												<?php
+												// find the profile picture of the user to_whom the service benifits
 												$to_whom_select_profilepicture = "";
 												foreach($users as $key => $user) {
-													echo '<a href="capture.php?to_whom_select='.$user->username.'#capture"><div class="element_select">'.$user->username.'</div></a>';
-
-													if(isset($_SESSION["to_whom_select"])) // find the profile picture of the user to_whom the service benifits
+													if(isset($_SESSION["to_whom_select"]))
 													{
 														if($_SESSION["to_whom_select"] == $user->username)
 														{
@@ -220,9 +227,6 @@ if($refresh_page)
 													}
 												}
 												?>
-											</div>
-										<div class="line">
-											<input name="to_whom" id="to_whom" placeholder="username" value="<?php remember_value("to_whom_select") ?>" type="text" style="width: 100%;"/>
 											<img class="profilepicture" src="<?php echo $to_whom_select_profilepicture ?>" alt="ProfilePicture to_whom_select">
 										</div>
 									</div>
@@ -275,7 +279,7 @@ if($refresh_page)
 													// uncomment this to only see the templates associated with the current logged in user
 													// $Actions_of_that_User = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_name")."`.`actions` WHERE `users` LIKE '%".$logged_in_user->username."%';");
 													foreach($Actions_of_that_User as $key => $action) {
-														echo '<a href="capture.php?what_select='.$action->keyword.'#capture"><div class="element_select">'.$action->keyword.'</div></a>'; 
+														echo '<a href="capture.php?what_select='.$action->keyword.'"><div class="element_select">'.$action->keyword.'</div></a>'; 
 													}
 												}
 												?>
@@ -304,7 +308,7 @@ if($refresh_page)
 										</div>
 								</div>
 								<div class="column100">
-									<input type="submit" name="erfassen" value="Erfassen" class="button" style="width: 100%; height: 40px;"/>
+									<input type="submit" name="capture" value="capture" class="button" style="width: 100%; height: 40px;"/>
 								</div>
 							</form>
 						</div>

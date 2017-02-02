@@ -116,7 +116,6 @@ include('text/head.php');
 <body id="body">
 	<div id="parent">
 		<div class="centered">
-			<?php include('text/headline.php'); ?>
 			<div id="content">
 				<div class="border">
 					<div class="element">

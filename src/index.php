@@ -39,7 +39,7 @@ if(isset($_REQUEST['action']))
 				{
 					$valid_login = true;
 					// password is correct
-					config::get('lib_mysqli_commands_instance')->SetCookie($_REQUEST['username'],$password);
+					config::get('lib_mysqli_commands_instance')->SetCookie($_REQUEST['username']);
 	
 					if(config::get('login_session_timeout') > 0)
 					{
