@@ -15,6 +15,24 @@ $logged_in_user = session_valid(); // currently logged in user
 $status_capture = ""; // string if and why login would not work
 $refresh_page = false; // if page should be refreshed or not
 
+$users = config::get('lib_mysqli_commands_instance')->users(); // get all users as array
+
+/* pass username, get userid */
+function getUserIDbyUsername($username,$users)
+{
+	$output = null;
+	foreach($users as $key => $user)
+	{
+		if($user->username == $username)
+		{
+			$output = $user->id;
+			break;
+		}
+	}
+	
+	return $output;
+}
+
 if($logged_in_user)
 {
 	if(isset($_REQUEST['action']))
@@ -25,15 +43,20 @@ if($logged_in_user)
 			$NewRecord = config::get('lib_mysqli_commands_instance')->newRecord("records");
 			
 			// RecordAdd - add a arbitrary record to a arbitrary table
-			$NewRecord->username = $_REQUEST["username"];
-	
+			
+			$UserID = getUserIDbyUsername($_REQUEST["username"],$users);
+			$NewRecord->username = $_REQUEST["username"]."(".$UserID.")"; // it is better to not only rely on the username, usernames change, ids not
+
 			$date_and_time = $_REQUEST["when_date"]." ".$_REQUEST["when_time"];
 			
 			$when = parse_date2timestamp($date_and_time);
 			$NewRecord->when = $when;
 	
 			$NewRecord->howmany_minutes = $_REQUEST["howmany_minutes"];
-			$NewRecord->to_whom = $_REQUEST["to_whom"];
+			
+			$UserID = getUserIDbyUsername($_REQUEST["to_whom"],$users);
+			$NewRecord->to_whom = $_REQUEST["to_whom"]."(".$UserID.")"; // it is better to not only rely on the username, usernames change, ids not
+;
 			$NewRecord->what = $_REQUEST["what"];
 			$NewRecord = config::get('lib_mysqli_commands_instance')->RecordAdd("records",$NewRecord); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
 			$test = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record // DOES THIS REALLY WORK?
@@ -204,9 +227,6 @@ if($refresh_page)
 										<div class="line">
 											<div id="list_of_usernames" class="column100" style="text-align: center;">
 												<?php
-
-												$users = config::get('lib_mysqli_commands_instance')->users(); // get all users
-												
 												foreach($users as $key => $user) {
 													echo '<a href="capture.php?to_whom_select='.$user->username.'"><div class="element_select">'.$user->username.'</div></a>';
 												}

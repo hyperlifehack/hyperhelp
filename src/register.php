@@ -27,19 +27,31 @@ $answer = ""; // feedback for user
 if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "register"))
 {
 	$user = config::get('lib_mysqli_commands_instance')->NewUser();
-	$user->username = $_REQUEST["username"];
-	$user->profilepicture = $_REQUEST["profilepicture"];
-	$user->mail = $_REQUEST["mail_address"];
-	$user->password = $_REQUEST["password"];
 
-	if(config::get('lib_mysqli_commands_instance')->UserExist($user,"username"))
+	if (strpos($_REQUEST["username"], '(') !== false)
 	{
-		$answer = "register"." error"." error"." very sorry the username \"".$user->username."\" is already taken :( please try a different one.";
+		$answer = "please do not use these special chars in usernames: \"(\"";
+	}
+	else if (strpos($_REQUEST["username"], ')') !== false)
+	{
+		$answer = "please do not use these special chars in usernames: \")\"";
 	}
 	else
 	{
-		$user = config::get('lib_mysqli_commands_instance')->UserAdd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
-		$answer = "register"." success"." success".' registration success! :) pleace check your mail, then <a href="index.php">login!</a>';
+		$user->username = $_REQUEST["username"];
+		$user->profilepicture = $_REQUEST["profilepicture"];
+		$user->mail = $_REQUEST["mail_address"];
+		$user->password = $_REQUEST["password"];
+	
+		if(config::get('lib_mysqli_commands_instance')->UserExist($user,"username"))
+		{
+			$answer = "register"." error"." error"." very sorry the username \"".$user->username."\" is already taken :( please try a different one.";
+		}
+		else
+		{
+			$user = config::get('lib_mysqli_commands_instance')->UserAdd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
+			$answer = "register"." success"." success".' registration success! :) pleace check your mail, then <a href="index.php">login!</a>';
+		}
 	}
 }
 
