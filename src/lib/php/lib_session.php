@@ -24,14 +24,14 @@ function session_valid()
 		}
 		else
 		{
-			return null;
 			logout();
+			return null;
 		}
 	}
 	else
 	{
-		return null;
 		logout();
+		return null;
 	}
 }
 

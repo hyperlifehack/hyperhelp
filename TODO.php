@@ -1,5 +1,11 @@
 <?php
 /*
+  
+=== toplist / highscore ===
+
+make that list actually working... 
+
+fix some security problems with capture.php (can be accessed without login)
 
 === generator.php ===
 
@@ -13,6 +19,11 @@ a map http://leafletjs.com/reference.html were you can see who around you would 
 === offerhelp.php ===
 
 a map http://leafletjs.com/reference.html were people offer what services around you
+
+
+=== unit ===
+ 
+o you should be able to define your own "units" besides minutes like 1x "TortCoins" = 1x peace of vegan cake = 1x Minute of your precious life = 1... :-D
 
 === 5-star-rating system ===
 oo whenever there is an action performed, the receiving user get's an email "action this and that was performed by ... please rate and comment on that action" 
