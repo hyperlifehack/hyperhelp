@@ -165,7 +165,7 @@ button {
 
 .button {
     -moz-user-select: none;
-    background-color: rgba(220, 20, 60, 0.8);
+    background-color: #5bc0de;
     border: 1px solid #46b8da;
     border-radius: 20px;
     cursor: pointer;
@@ -176,7 +176,7 @@ button {
 
 .button_div {
     -moz-user-select: none;
-    background-color: rgba(220, 20, 60, 0.8);
+    background-color: #5bc0de;
     border: 1px solid #46b8da;
 	border-radius: 20px;
     cursor: pointer;

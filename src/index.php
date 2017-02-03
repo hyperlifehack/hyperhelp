@@ -193,7 +193,12 @@ if($valid_login)
 			<div id="content">
 				<div class="border">
 					<div class="element">
-						<div class="title button clickable">ErklärVideo</div>
+						<div id="headline" style="margin-top: 0px;" class="boxShadows" title="for security: works without Javascript :-D">
+							<h2>
+								<div id="headline_text">ErklärVideo</div>
+							</h2>
+						</div>
+								
 						<div class="element_content">
 							<div class="table">
 								<div class="column100">
@@ -216,77 +221,37 @@ if($valid_login)
 						<div class="title button clickable">Best Ranking Users:</div>
 						<div class="element_content">
 							<div class="table">
-								<div class="column100">
-									<div class="line">
-										<div class="prop">
-											<a target="_blank"
-												href="https://de.wikipedia.org/wiki/Hypertext_Markup_Language">HTML</a>
-											&amp; <a target="_blank"
-												href="https://de.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>
-										</div>
-										<div class="value">
-											<img src="images/star.png" /><img src="images/star.png" /><img
-												src="images/star.png" /><img src="images/star.png" />
-										</div>
-									</div>
-								</div>
-								<div class="column100">
-									<div class="line">
-										<div class="prop">
-											<a target="_blank" href="https://de.wikipedia.org/wiki/PHP">PHP</a>
-										</div>
-										<div class="value">
-											<img src="images/star.png" /><img src="images/star.png" /><img
-												src="images/star.png" /><img src="images/star.png" />
-										</div>
-									</div>
-								</div>
-								<div class="column100">
-									<div class="line">
-										<div class="prop">
-											<a target="_blank"
-												href="https://de.wikipedia.org/wiki/JavaScript">JavaScript</a>
-										</div>
-										<div class="value">
-											<img src="images/star.png" /><img src="images/star.png" /><img
-												src="images/star.png" /><img src="images/star.png" />
+								<?php 
+								// 1. get a list of all users
+								// 2. calculate their total captured units
+								// 3. user gets a star for every hour donated
+								$users = config::get('lib_mysqli_commands_instance')->users(); // get all users as array
+
+								foreach($users as $key => $user) {
+									$query = "SELECT SUM( `howmany_minutes` ) AS units_total FROM `records` WHERE username = '".$user->username."';";
+									$units = config::get('lib_mysqli_interface_instance')->query($query); // $units usually minutes
+									$units = GetFirstElementOfArray($units);
+									$units_total = $units->units_total;
+										
+									$hours = round($units_total / 60);
+echo '
+									<div class="column100">
+										<div class="line">
+											<div class="prop">
+												'.$user->username.'
+											</div>
+											<div class="value" title="one star for every hour donated">';
+									for($i=0;$i<$hours;$i++)
+									{
+										echo '<img src="images/star.png" />';
+									}
+	echo '
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="column100">
-									<div class="line">
-										<div class="prop">
-											<a target="_blank"
-												href="https://de.wikipedia.org/wiki/JQuery">JQuery</a>
-										</div>
-										<div class="value">
-											<img src="images/star.png" /><img src="images/star.png" /><img
-												src="images/star.png" /><img src="images/star.png" />
-										</div>
-									</div>
-								</div>
-								<div class="column100">
-									<div class="line">
-										<div class="prop">
-											<a target="_blank" href="http://getbootstrap.com/">Bootstrap</a>
-										</div>
-										<div class="value">
-											<img src="images/star.png" /><img src="images/star.png" /><img src="images/star.png" />
-										</div>
-									</div>
-								</div>
-								<div class="column100">
-									<div class="line">
-										<div class="prop">
-											<a target="_blank"
-												href="https://de.wikipedia.org/wiki/Bash_(Shell)">Bash</a>
-										</div>
-										<div class="value">
-											<img src="images/star.png" /><img src="images/star.png" /><img
-												src="images/star.png" />
-										</div>
-									</div>
-								</div>
+';
+								}
+								?>
 							</div>
 						</div>
 					</div>
