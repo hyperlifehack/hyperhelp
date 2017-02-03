@@ -128,6 +128,7 @@ if($valid_login)
 					<div id="headline_text">hyperhelp.org</div>
 				</h1>
 				<p>Thank you - for your Commitment to your Community! :)</p>
+				<p><a href="https://github.com/hyperlifehack/hyperhelp.org" target="_blank">(100% Transparent! Download OpenSource here!)</a></p>
 			</div>
 			<!-- explanation text end -->
 
