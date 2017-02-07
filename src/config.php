@@ -58,7 +58,7 @@ config::set('debug_mode',		true);					# if you want additional info about whats 
 /* ======================= DATABASE */
 config::set("db_srv_address","localhost");				# address of database server
 config::set("db_datasource","mysql");					# right now can only be "mysql", could be postgress (not implemented) sqlite (not implemented)
-config::set("db_name","db_hyperhelp");					# the database one will deal with, for conveniance same name as platform
+config::set("db_name","admin_hyperhelp");					# the database one will deal with, for conveniance same name as platform
 config::set("db_charset","utf8");						# if you want special chars to be properly displayed in the database/phpmyadmin etc.
 config::set("db_user","root");							# what database user to use for accessing the database
 config::set("db_pass","root");							# what database password to use for accessing the database

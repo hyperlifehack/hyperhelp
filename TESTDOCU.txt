@@ -1,0 +1,29 @@
+==== HyperHelp.org TestDocumentation ====
+
+All these steps must be performed successfully before releasing it to the public/confronting the user.
+
+=== register1.php ===
+
+o 1. register as new user,
+o if the required details (username, password, mail) are entered,
+o it should create a new user, generating an ActivationID that is also saved inside $_SESSION["activation"] and mailed to the user. (activation-link)
+
+right now it is ok and possible to immediately login, without clicking any activation-link, which is also needed if the server is not connected to the internet.
+
+o 1.1. misstype second password -> should return error message
+o 1.2. do not enter username -> should return error message
+
+=== register2.php === 
+
+o 1.3. it is optional to upload a profile-picture, but it should also work from mobile phones.
+
+=== index.php ===
+
+o 2. login as new user
+o 2.1. capture action,
+if all detailes are entered it should return the RecordID / RandomID that it created the record with,
+signaling the user "your progress is saved", then refreshes the page so you can capture another of your benevolent contributions to your community.
+
+o 2.1.1. no minutes selected/entered -> should return error message
+o 2.1.2. no action selected/entered -> should return error message
+o 2.1.3. no to_whom selected/entered -> should return error message

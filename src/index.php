@@ -183,7 +183,7 @@ if($valid_login)
 						</div>
 					</form>
 					<div class="column100">
-						<a href="register.php">
+						<a href="register1.php">
 							<div class="button_div" style="width: 100%;"><p>new here? -> register as new user</p></div>
 						</a>
 					</div>

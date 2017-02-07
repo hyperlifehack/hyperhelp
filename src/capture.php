@@ -7,6 +7,7 @@ require_once('./lib/php/lib_mysqli_commands.php');	// library needed to access d
 config::set('lib_mysqli_interface_instance',new lib_mysqli_interface()); // create instance from class and store reference to this instance in config for reuse
 config::set('lib_mysqli_commands_instance',new lib_mysqli_commands()); // create instance from class and store reference to this instance in config for reuse
 
+$user = ""; // currently loggedin user
 require_once('./lib/php/lib_security.php');			// will mysql-real-escape all input
 require_once('./lib/php/lib_session.php');			// check if user is allowed to access this page
 /*=== header ends ===*/
@@ -33,71 +34,14 @@ function getUserIDbyUsername($username,$users)
 	return $output;
 }
 
+/* try to detect capture event */
 if($logged_in_user)
 {
 	if(isset($_REQUEST['action']))
 	{
-		/* capture action */
 		if($_REQUEST['action'] == "capture")
 		{
-			$NewRecord = config::get('lib_mysqli_commands_instance')->newRecord("records");
-			
-			// RecordAdd - add a arbitrary record to a arbitrary table
-			
-			$UserID = getUserIDbyUsername($_REQUEST["username"],$users);
-			$NewRecord->username = $_REQUEST["username"]."(".$UserID.")"; // it is better to not only rely on the username, usernames change, ids not
-
-			$date_and_time = $_REQUEST["when_date"]." ".$_REQUEST["when_time"];
-			
-			$when = parse_date2timestamp($date_and_time);
-			$NewRecord->when = $when;
-	
-			$NewRecord->howmany_minutes = $_REQUEST["howmany_minutes"];
-			
-			$UserID = getUserIDbyUsername($_REQUEST["to_whom"],$users);
-			$NewRecord->to_whom = $_REQUEST["to_whom"]."(".$UserID.")"; // it is better to not only rely on the username, usernames change, ids not
-;
-			$NewRecord->what = $_REQUEST["what"];
-			$NewRecord = config::get('lib_mysqli_commands_instance')->RecordAdd("records",$NewRecord); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
-			$test = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record // DOES THIS REALLY WORK?
-			$NewRecord->id = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record
-			
-			// store what as template
-			if(isset($_REQUEST['store_what_as_template']))
-			{
-				// test if template exists
-				$NewAction = config::get('lib_mysqli_commands_instance')->newRecord("actions");
-				$NewAction->keyword = $_REQUEST['what'];
-				
-				$ActionExists = config::get('lib_mysqli_commands_instance')->records("actions",$NewAction,"keyword");
-				if($ActionExists)
-				{
-					// check if user is not allready associated with this action
-					if (strpos($ActionExists->users, $logged_in_user->username) !== false)
-					{
-						// do nothing, user is allready associated with this action
-					}
-					else
-					{
-						// add user to the list of users that use this action
-						$ActionExists->users = $ActionExists->users.$logged_in_user->username.",";
-						$ActionExists_id = config::get('lib_mysqli_commands_instance')->RecordEdit("actions",$ActionExists);
-					}
-				}
-				else
-				{
-					// add action to database
-					$NewAction->description = $_REQUEST['what'];
-					$NewAction->users = $logged_in_user->username.",";
-					$NewAction = config::get('lib_mysqli_commands_instance')->RecordAdd("actions",$NewAction); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
-				}
-			}
-
-			if(lib_mysqli_commands::get('worked',true))
-			{
-				$status_capture = "thank you for your hard work and dedication! :) your working-time have been recorded with the recordID: ".$NewRecord->id."<br> Page will refresh in 3 sec...";
-				$refresh_page = true;
-			}
+			capture();
 		}
 	}
 }
@@ -136,6 +80,85 @@ function remember_value($value)
 	{
 		// if value was entered previously
 		if(isset($_SESSION[$value])) echo $_SESSION[$value];
+	}
+}
+
+/* verify all input and insert the record (to listen to some music) */
+function capture()
+{
+	$NewRecord = config::get('lib_mysqli_commands_instance')->newRecord("actions");
+	
+	if(isset($_REQUEST["username"]) && (!empty($_REQUEST["username"])))
+	{
+		$NewRecord->username = $_REQUEST["username"]; // it is better to not only rely on the username, usernames change, ids not
+	}
+	else
+	{
+		$status_capture = "there was no valid username given";
+		return;
+	}
+
+	/* this is an as unique and random as possible id that identifies each action uniquely (the autoIncrementIDs do this as well but only per-single-server)
+	 * in case this action-records want to be synced with other servers,
+	* there should be even on other servers no actions with the same RandomID
+	*/
+	$NewRecord->RandomID = salt();
+		
+	$user = config::get('lib_mysqli_commands_instance')->GetUserBySession($_COOKIE["hyperhelp"]);
+	$NewRecord->username_id = $user->id; // it is better to not only rely on the username_id, usernames change, ids should not
+	// getUserIDbyUsername($_REQUEST["username"],$users);
+	
+	$date_and_time = $_REQUEST["when_date"]." ".$_REQUEST["when_time"];
+		
+	$when = parse_date2timestamp($date_and_time);
+	$NewRecord->when = $when;
+	
+	$NewRecord->howmany_minutes = $_REQUEST["howmany_minutes"];
+		
+	$NewRecord->to_whom = $_REQUEST["to_whom"];
+		
+	$NewRecord->to_whom_id = getUserIDbyUsername($_REQUEST["to_whom"],$users); // it is better to not only rely on the username, usernames change, ids not
+	
+	$NewRecord->what = $_REQUEST["what"];
+	$NewRecord = config::get('lib_mysqli_commands_instance')->RecordAdd("actions",$NewRecord); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
+	$test = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record // DOES THIS REALLY WORK?
+	$NewRecord->id = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record
+		
+	// store what as template
+	if(isset($_REQUEST['store_what_as_template']))
+	{
+		// test if template exists
+		$NewAction = config::get('lib_mysqli_commands_instance')->newRecord("action_templates");
+		$NewAction->keyword = $_REQUEST['what'];
+	
+		$ActionExists = config::get('lib_mysqli_commands_instance')->records("action_templates",$NewAction,"keyword");
+		if($ActionExists)
+		{
+			// check if user is not allready associated with this action
+			if (strpos($ActionExists->users, $logged_in_user->username) !== false)
+			{
+				// do nothing, user is allready associated with this action
+			}
+			else
+			{
+				// add user to the list of users that use this action
+				$ActionExists->users = $ActionExists->users.$logged_in_user->username.",";
+				$ActionExists_id = config::get('lib_mysqli_commands_instance')->RecordEdit("action_templates",$ActionExists);
+			}
+		}
+		else
+		{
+			// add action to database
+			$NewAction->description = $_REQUEST['what'];
+			$NewAction->users = $logged_in_user->username.",";
+			$NewAction = config::get('lib_mysqli_commands_instance')->RecordAdd("action_templates",$NewAction); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
+		}
+	}
+	
+	if(lib_mysqli_commands::get('worked',true))
+	{
+		$status_capture = "thank you for your hard work and dedication! :) your working-time have been recorded with the recordID: ".$NewRecord->id."<br> Page will refresh in 3 sec...";
+		$refresh_page = true;
 	}
 }
 
@@ -295,7 +318,7 @@ if($refresh_page)
 												if($logged_in_user)
 												{
 													// show all templates from all users
-													$Actions_of_that_User = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_name")."`.`actions`;");
+													$Actions_of_that_User = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_name")."`.`action_templates`;");
 													// uncomment this to only see the templates associated with the current logged in user
 													// $Actions_of_that_User = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_name")."`.`actions` WHERE `users` LIKE '%".$logged_in_user->username."%';");
 													foreach($Actions_of_that_User as $key => $action) {

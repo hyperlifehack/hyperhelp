@@ -326,7 +326,7 @@ class lib_mysqli_commands extends lib_mysqli_interface {
 	 */
 	public function GetUserBySession($session)
 	{
-		$result = null;
+		$output = null;
 
 		if($session)
 		{
@@ -336,13 +336,52 @@ class lib_mysqli_commands extends lib_mysqli_interface {
 			if(isset($user_array[0]))
 			{
 				// hash found
-				$result = $user_array[0];
+				$output = $user_array[0];
 			}
 		}
 	
-		if(!empty($result)) lib_mysqli_interface::set('worked',true);
+		if(!empty($output)) lib_mysqli_interface::set('worked',true);
 	
-		return $result; // output just the single found user, not the $user_array where the first element is the user we are looking for // lib_mysqli_interface::get('output')
+		return $output; // output just the single found user, not the $user_array where the first element is the user we are looking for // lib_mysqli_interface::get('output')
+	}
+	
+	/* get user by id
+	 */
+	public function GetUserByID($id)
+	{
+		$output = null;
+
+		$user_array = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_auth_table")."` WHERE `id` = '".$id."'");
+
+		if(isset($user_array[0]))
+		{
+			// hash found
+			$output = $user_array[0];
+		}
+	
+		if(!empty($output)) lib_mysqli_interface::set('worked',true);
+	
+		return $output; // output just the single found user, not the $user_array where the first element is the user we are looking for // lib_mysqli_interface::get('output')
+	}
+	
+	/* get user by activation code
+	 */
+	public function GetUserByActivation($activation)
+	{
+		$output = null;
+
+		$valid_until = null;
+		$user_array = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_auth_table")."` WHERE `activation` = '".$activation."'");
+
+		if(isset($user_array[0]))
+		{
+			// hash found
+			$output = $user_array[0];
+		}
+	
+		if(!empty($output)) lib_mysqli_interface::set('worked',true);
+	
+		return $output; // output just the single found user, not the $user_array where the first element is the user we are looking for // lib_mysqli_interface::get('output')
 	}
 	
 	/* delete user
