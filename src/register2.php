@@ -71,8 +71,8 @@ if(isset($_FILES["fileToUpload"]))
 	// Check if file already exists
 	if (file_exists($target_file))
 	{
-		echo "Sorry, file already exists.";
-		$uploadOk = 0;
+		echo "File already exists, use that as your profile picture?";
+		$uploadOk = 1;
 	}
 	// Check file size
 	$maximum_upload_filesize = getMaximumFileUploadSize();

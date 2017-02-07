@@ -16,6 +16,8 @@ o 1.2. do not enter username -> should return error message
 === register2.php === 
 
 o 1.3. it is optional to upload a profile-picture, but it should also work from mobile phones.
+o 1.3.1. user clicks on browser and selects a *.jpg, *.png or *.bmp or even a *.gif, then clicks upload, the picture should be uploaded and displayed
+o 1.3.2. user clicks on "set this as my profilepicture"
 
 === index.php ===
 
@@ -42,3 +44,16 @@ o 3.1.3. no to_whom selected/entered -> should return error message
 === logout.php ===
 
 o 4. whenever a user fires up the logout.php, all cookies should be deleted and user should not be able to access capture.php anymore. 
+
+=== activation.php ===
+
+o 5. when a user registers, user should get an email like:
+
+Dear test,
+thank you for registering.
+
+Please click on http://wer-hilft-wem-wieviel.de/activation.php?code=NJh5APeYv_FHpu0q
+to activate your account/verify your mail.
+
+Thanks for contributing!
+ 
