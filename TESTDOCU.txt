@@ -52,8 +52,7 @@ o 5. when a user registers, user should get an email like:
 Dear test,
 thank you for registering.
 
-Please click on http://wer-hilft-wem-wieviel.de/activation.php?code=NJh5APeYv_FHpu0q
+Please click on http://domain.com/activation.php?code=NJh5APeYv_FHpu0q
 to activate your account/verify your mail.
 
 Thanks for contributing!
- 

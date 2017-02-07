@@ -60,19 +60,23 @@ if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "register"))
 			$from = config::get('mail_admin');
 			$to = $user->mail;
 			$subjet = "Activation of your Account@".config::get('platform_name');
-			$text = "
+			$text = '
 <html>
 <body>
-Dear ".$user->username.",<br>
+Dear '.$user->username.',<br>
 thank you for registering.<br>
 <br>
-Please click on ".config::get('platform_url')."/activation.php?code=".$user->activation."<br>
+Please click <a href="'.config::get('platform_url').'/activation.php?code='.$user->activation.'">here to activate and verify your mail.</a><br>
+
 to activate your account/verify your mail.<br>
 <br>		
 Thanks for contributing!<br>
+
+Yours sincerelly 
+<a href="'.config::get('platform_url').'">'.config::get('platform_url').'</a>
 </body>
 </html>
-";
+';
 			$answer = $answer." <br> ".sendMail($to,$from,$subjet,$text);
 		}
 	}
