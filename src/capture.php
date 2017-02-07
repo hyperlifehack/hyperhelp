@@ -145,7 +145,13 @@ function capture($users)
 	}
 
 	$NewRecord->to_whom_id = getUserIDbyUsername($_REQUEST["to_whom"],$users); // it is better to not only rely on the username, usernames change, ids not
+	if(!isset($_REQUEST["to_whom"]) || (empty($_REQUEST["to_whom"])))
+	{
+		$output["status_capture"] = "to_whom is missing.";
+		return $output;
+	}
 
+	$NewRecord->what = $_REQUEST["what"];
 	if(!isset($_REQUEST["what"]) || (empty($_REQUEST["what"])))
 	{
 		$output["status_capture"] = "what is missing.";

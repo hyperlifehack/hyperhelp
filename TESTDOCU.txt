@@ -20,13 +20,21 @@ o 1.3. it is optional to upload a profile-picture, but it should also work from 
 === index.php ===
 
 o 2. login as new user
+
+=== capture.php ===
+
 o 2.1. capture action,
 if all detailes are entered it should return the RecordID / RandomID that it created the record with,
 signaling the user "your progress is saved", then refreshes the page so you can capture another of your benevolent contributions to your community.
 
+o 2.1.0. check if all details have been written to the database table "actions" 
+
 o 2.1.1. no minutes selected/entered -> should return error message
+
 o 2.1.2. no action selected/entered -> should return error message
+
 o 2.1.3. no to_whom selected/entered -> should return error message
+
 
 === logout.php ===
 
