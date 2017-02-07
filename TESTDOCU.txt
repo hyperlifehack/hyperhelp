@@ -19,23 +19,26 @@ o 1.3. it is optional to upload a profile-picture, but it should also work from 
 
 === index.php ===
 
-o 2. login as new user
+o 2. check if the TopList is displayed
+list with all users and one white star per every hour donated, one blue star per every day one red star per every month
+
+o 2.1. check if you can login as new user
 
 === capture.php ===
 
-o 2.1. capture action,
+o 3.1. capture action,
 if all detailes are entered it should return the RecordID / RandomID that it created the record with,
 signaling the user "your progress is saved", then refreshes the page so you can capture another of your benevolent contributions to your community.
 
-o 2.1.0. check if all details have been written to the database table "actions" 
+o 3.1.0. check if all details have been written to the database table "actions" 
 
-o 2.1.1. no minutes selected/entered -> should return error message
+o 3.1.1. no minutes selected/entered -> should return error message
 
-o 2.1.2. no action selected/entered -> should return error message
+o 3.1.2. no action selected/entered -> should return error message
 
-o 2.1.3. no to_whom selected/entered -> should return error message
+o 3.1.3. no to_whom selected/entered -> should return error message
 
 
 === logout.php ===
 
-o 3. whenever a user fires up the logout.php, all cookies should be deleted and user should not be able to access capture.php anymore. 
+o 4. whenever a user fires up the logout.php, all cookies should be deleted and user should not be able to access capture.php anymore. 

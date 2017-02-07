@@ -231,7 +231,7 @@ if($valid_login)
 
 								foreach($users as $key => $user)
 								{
-									$query = "SELECT SUM( `howmany_minutes` ) AS units_total FROM `actions` WHERE username = '".$user->id."';";
+									$query = "SELECT SUM( `howmany_minutes` ) AS units_total FROM `actions` WHERE username = '".$user->username."';";
 									$units = config::get('lib_mysqli_interface_instance')->query($query); // $units usually minutes
 									$units = GetFirstElementOfArray($units);
 									$units_total = $units->units_total;
