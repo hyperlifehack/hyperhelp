@@ -310,6 +310,10 @@ title {
 	width: 100%;
 }
 
+.line img {
+	max-width: 100%;
+}
+
 .prop {
 	float: left;
 	position: relative;

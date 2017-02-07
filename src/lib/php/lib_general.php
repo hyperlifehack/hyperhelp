@@ -118,39 +118,6 @@ function generate_activation_key()
 	return $activation_key;
 }
 
-/* send mail */
-function sendMail($from,$to,$subjet,$text)
-{
-	// assemble header utf8
-	$header = ('From: ' . $from . '\r\n');
-	$header .= ('Reply-To: ' . $from . '\r\n');
-	$header .= ('Bcc: '.$from.'\r\n');
-	$header .= ('Return-Path: ' . $from . '\r\n');
-	$header .= ('X-Mailer: PHP/' . phpversion() . '\r\n');
-	$header .= ('X-Sender-IP: ' . $_SERVER['REMOTE_ADDR'] . '\r\n');
-	$header .= ('Content-type: text/html\r\n');
-	$header .= ("MIME-Version: 1.0\r\n");
-	$header .= ("Content-Type: text/html; charset=utf-8\r\n");
-	$header .= ("Content-Transfer-Encoding: 8bit\r\n\r\n");
-	$valid_sender = '-f '.$settings_mail_activation;
-		
-	/* Verschicken der Mail */
-	if(mail($to, $subject, $text, $header, $valid_sender))
-	{
-		// 	echo "Mail sent successfully!";
-		exit ('type:success,id:registration successfull;sending activation mail successfull!,details:Thank you for registering :) You should receive an registration mail soon.');
-		// sleep(3);
-		// header("Location: servermessages/activation_send.php");
-	}
-	else
-	{
-		// echo"Mail not sent!";
-		exit('type:success,id:registration successfull;sending activation mail failed!,details:Thank you for registering :) You should receive an registration mail soon.');
-		// sleep(3);
-		header("Location: servermessages/activation_mail_failed.php");
-	}
-}
-
 /* generate a password and md5 hash it */
 function generatePassword($length = 8) {
 	

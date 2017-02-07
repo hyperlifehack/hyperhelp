@@ -12,7 +12,7 @@ require_once('./lib/php/lib_security.php');			// will mysql-real-escape all inpu
 require_once('./lib/php/lib_session.php');			// check if user is allowed to access this page
 /*=== header ends ===*/
 
-$logged_in_user = session_valid(); // currently logged in user
+$logged_in_user = session_valid(); // check if user accessing this page has logged in = session valid or not -> logout.php
 $status_capture = ""; // string if and why login would not work
 $refresh_page = false; // if page should be refreshed or not
 
@@ -41,7 +41,9 @@ if($logged_in_user)
 	{
 		if($_REQUEST['action'] == "capture")
 		{
-			capture();
+			$output = capture($users);
+			$status_capture = $status_capture." ".$output["status_capture"];
+			$refresh_page = $output["refresh_page"];
 		}
 	}
 }
@@ -84,8 +86,11 @@ function remember_value($value)
 }
 
 /* verify all input and insert the record (to listen to some music) */
-function capture()
+function capture($users)
 {
+	$output["status_capture"] = null;
+	$output["refresh_page"] = false;
+
 	$NewRecord = config::get('lib_mysqli_commands_instance')->newRecord("actions");
 	
 	if(isset($_REQUEST["username"]) && (!empty($_REQUEST["username"])))
@@ -94,7 +99,7 @@ function capture()
 	}
 	else
 	{
-		$status_capture = "there was no valid username given";
+		$output["status_capture"] = 'there was no valid username given';
 		return;
 	}
 
@@ -107,19 +112,46 @@ function capture()
 	$user = config::get('lib_mysqli_commands_instance')->GetUserBySession($_COOKIE["hyperhelp"]);
 	$NewRecord->username_id = $user->id; // it is better to not only rely on the username_id, usernames change, ids should not
 	// getUserIDbyUsername($_REQUEST["username"],$users);
-	
+
+	if(!isset($_REQUEST["when_date"]) || (empty($_REQUEST["when_date"])))
+	{
+		$output["status_capture"] = "when_date is missing.";
+		return $output;
+	}
+	if(!isset($_REQUEST["when_time"]) || (empty($_REQUEST["when_time"])))
+	{
+		$output["status_capture"] = "when_time is missing.";
+		return $output;
+	}
+
 	$date_and_time = $_REQUEST["when_date"]." ".$_REQUEST["when_time"];
 		
 	$when = parse_date2timestamp($date_and_time);
 	$NewRecord->when = $when;
 	
 	$NewRecord->howmany_minutes = $_REQUEST["howmany_minutes"];
-		
-	$NewRecord->to_whom = $_REQUEST["to_whom"];
-		
-	$NewRecord->to_whom_id = getUserIDbyUsername($_REQUEST["to_whom"],$users); // it is better to not only rely on the username, usernames change, ids not
 	
-	$NewRecord->what = $_REQUEST["what"];
+	if(!isset($_REQUEST["howmany_minutes"]) || (empty($_REQUEST["howmany_minutes"])))
+	{
+		$output["status_capture"] = "howmany_minutes is missing.";
+		return $output;
+	}
+
+	$NewRecord->to_whom = $_REQUEST["to_whom"];
+	if(!isset($_REQUEST["to_whom"]) || (empty($_REQUEST["to_whom"])))
+	{
+		$output["status_capture"] = "to_whom is missing.";
+		return $output;
+	}
+
+	$NewRecord->to_whom_id = getUserIDbyUsername($_REQUEST["to_whom"],$users); // it is better to not only rely on the username, usernames change, ids not
+
+	if(!isset($_REQUEST["what"]) || (empty($_REQUEST["what"])))
+	{
+		$output["status_capture"] = "what is missing.";
+		return $output;
+	}
+
 	$NewRecord = config::get('lib_mysqli_commands_instance')->RecordAdd("actions",$NewRecord); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
 	$test = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record // DOES THIS REALLY WORK?
 	$NewRecord->id = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record
@@ -157,9 +189,11 @@ function capture()
 	
 	if(lib_mysqli_commands::get('worked',true))
 	{
-		$status_capture = "thank you for your hard work and dedication! :) your working-time have been recorded with the recordID: ".$NewRecord->id."<br> Page will refresh in 3 sec...";
-		$refresh_page = true;
+		$output["status_capture"] = 'thank you for your hard work and dedication! :) your working-time have been recorded with the RandomID: "'.$NewRecord->RandomID.'" / RecordID: "'.$NewRecord->id.'"<br> Page will refresh in 3 sec...';
+		$output["refresh_page"] = true;
 	}
+	
+	return $output;
 }
 
 ?>
@@ -187,7 +221,7 @@ if($refresh_page)
 							<h1>
 								<div id="headline_text">capture action</div>
 							</h1>
-							<h2><div id="status"><?php echo $status_capture; ?></div></h2>
+							<h2><div style="background-color: white; color: red;"><?php echo $status_capture; ?></div></h2>
 							<a style="color: white;" href="logout.php">(logout)</a>
 						</div>
 						<div class="element_content">
@@ -309,7 +343,7 @@ if($refresh_page)
 								<div class="table">
 									<div class="column100">
 										<div class="line">
-											<input name="what" id="what" placeholder="what?" value="<?php remember_value("what_select") ?>" type="text" style="width: 100%;"/>
+											<input name="what" id="what" placeholder="what?" value="<?php remember_value("what_select");?>" type="text" style="width: 100%;"/>
 											<input type="checkbox" name="store_what_as_template" value="true">store as template?<br>
 										</div>
 										<div class="line">
@@ -322,7 +356,7 @@ if($refresh_page)
 													// uncomment this to only see the templates associated with the current logged in user
 													// $Actions_of_that_User = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_name")."`.`actions` WHERE `users` LIKE '%".$logged_in_user->username."%';");
 													foreach($Actions_of_that_User as $key => $action) {
-														echo '<a href="capture.php?what_select='.$action->keyword.'"><div class="element_select">'.$action->keyword.'</div></a>'; 
+														echo '<a href="capture.php?what_select='.$action->keyword.'&what_id='.$action->id.'"><div class="element_select">'.$action->keyword.'</div></a>'; 
 													}
 												}
 												?>

@@ -41,7 +41,7 @@ function logout()
 	// log em out
 	$_COOKIE["hyperhelp"] = ""; // not using sessions but well...
 
-	setcookie("hyperhelp", "", 1); // delete cookie by overwriting it
+	setcookie("hyperhelp", "", time()-3600); // delete cookie by overwriting it = log em out
 
 	header("Location: logout.php");
 }

@@ -219,38 +219,53 @@ if($valid_login)
 					<!-- end of element -->
 
 					<div class="element">
-						<div class="title button clickable">Best Ranking Users:</div>
+						<div class="title button clickable">Users Toplist:</div>
 						<div class="element_content">
 							<div class="table">
 								<?php 
 								// 1. get a list of all users
 								// 2. calculate their total captured units
 								// 3. user gets a star for every hour donated
+								// 3.1. white star for every hour, blue star for every day, red star for every month
 								$users = config::get('lib_mysqli_commands_instance')->users(); // get all users as array
 
-								foreach($users as $key => $user) {
-									$query = "SELECT SUM( `howmany_minutes` ) AS units_total FROM `records` WHERE username = '".$user->username."';";
+								foreach($users as $key => $user)
+								{
+									$query = "SELECT SUM( `howmany_minutes` ) AS units_total FROM `actions` WHERE username = '".$user->id."';";
 									$units = config::get('lib_mysqli_interface_instance')->query($query); // $units usually minutes
 									$units = GetFirstElementOfArray($units);
 									$units_total = $units->units_total;
-										
-									$hours = round($units_total / 60);
-echo '
-									<div class="column100">
-										<div class="line">
-											<div class="prop">
-												'.$user->username.'
-											</div>
-											<div class="value" title="one star for every hour donated">';
-									for($i=0;$i<$hours;$i++)
+
+									if(isset($units_total))
 									{
-										echo '<img src="images/star.png" />';
-									}
+										$hours = round($units_total / 60);
+										$days = round($hours / 24);
+										$months = round($days / 30);
 	echo '
+										<div class="column100">
+											<div class="line">
+												<div class="prop">
+													'.$user->username.'
+												</div>
+												<div class="value" title="one star for every hour donated">';
+													for($i=0; $i<$months; $i++)
+													{
+														echo '<img src="images/star_red.png" />';
+													}
+													for($i=0; $i< $days; $i++)
+													{
+														echo '<img src="images/star_blue.png" />';
+													}
+													for($i=0; $i<$hours; $i++)
+													{
+														echo '<img src="images/star_white.png" />';
+													}
+		echo '
+												</div>
 											</div>
 										</div>
-									</div>
-';
+	';
+									}
 								}
 								?>
 							</div>

@@ -4,9 +4,9 @@ All these steps must be performed successfully before releasing it to the public
 
 === register1.php ===
 
-o 1. register as new user,
-o if the required details (username, password, mail) are entered,
-o it should create a new user, generating an ActivationID that is also saved inside $_SESSION["activation"] and mailed to the user. (activation-link)
+ok 1. register as new user,
+ok if the required details (username, password, mail) are entered,
+ok it should create a new user, generating an ActivationID that is also saved inside $_SESSION["activation"] and mailed to the user. (activation-link)
 
 right now it is ok and possible to immediately login, without clicking any activation-link, which is also needed if the server is not connected to the internet.
 
@@ -27,3 +27,7 @@ signaling the user "your progress is saved", then refreshes the page so you can 
 o 2.1.1. no minutes selected/entered -> should return error message
 o 2.1.2. no action selected/entered -> should return error message
 o 2.1.3. no to_whom selected/entered -> should return error message
+
+=== logout.php ===
+
+o 3. whenever a user fires up the logout.php, all cookies should be deleted and user should not be able to access capture.php anymore. 

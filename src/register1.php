@@ -9,6 +9,7 @@ config::set('lib_mysqli_commands_instance',new lib_mysqli_commands()); // create
 
 require_once('./lib/php/lib_security.php');			// will mysql-real-escape all input
 require_once('./lib/php/lib_session.php');			// check if user is allowed to access this page
+require_once('./lib/php/mail.php');					// to send mails
 /*=== header ends ===*/
 
 $answer = ""; // feedback for user
@@ -23,6 +24,10 @@ if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "register"))
 	if(empty($_REQUEST["username"]))
 	{
 		$answer = "usernames can not be empty.";
+	}
+	else if(empty($_REQUEST["mail_address"]))
+	{
+		$answer = "mail-address can not be empty.";
 	}
 	else if($_REQUEST["password"] != $_REQUEST["check_password"])
 	{
@@ -43,28 +48,33 @@ if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "register"))
 		{
 			$user->RandomID = salt(); // random id that hopefully uniquely identifies users accross multiple servers
 			$user = config::get('lib_mysqli_commands_instance')->UserAdd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
-			$answer = 'registration successfull! You got the UserID '.$user->id.' :) - you can <a href="index.php">login</a> now - or continue with <a href="register2.php">uploading a ProfilePicture</a>';
+			$answer = 'registration successfull! You got the RandomID "'.$user->RandomID.'" / UserID "'.$user->id.'" :) - you can <a href="index.php">login</a> now - or continue with <a href="register2.php">uploading a ProfilePicture</a>';
 			
 			/* remember UserID */
 			$_SESSION["UserID"] = $user->id;
+			$_SESSION["RandomID"] = $user->RandomID;
 			/* remember activation key */
 			$_SESSION["activation"] = $user->activation;
+			
+			/* send activation Mail (optional on LAN systems) */
+			$from = config::get('mail_admin');
+			$to = $user->mail;
+			$subjet = "Activation of your Account@".config::get('platform_name');
+			$text = "
+<html>
+<body>
+Dear ".$user->username.",<br>
+thank you for registering.<br>
+<br>
+Please click on ".config::get('platform_url')."/activation.php?code=".$user->activation."<br>
+to activate your account/verify your mail.<br>
+<br>		
+Thanks for contributing!<br>
+</body>
+</html>
+";
+			$answer = $answer." <br> ".sendMail($to,$from,$subjet,$text);
 		}
-	}
-}
-
-if(isset($_REQUEST["check_username_taken"]))
-{
-	include_once("./lib/php/lib_mysqli_commands.php");
-	$user = config::get('lib_mysqli_commands_instance')->NewUser();
-	$user->username = $_REQUEST["check_username_taken"];
-	if(config::get('lib_mysqli_commands_instance')->UserExist($user,"username"))
-	{
-		$answer = "check_username_taken"." error"." error"." very sorry the username \"".$user->username."\" is already taken :( please try a different one.";
-	}
-	else
-	{
-		$answer = "check_username_taken"." success"." success"." username is available";
 	}
 }
 ?>
@@ -159,7 +169,7 @@ include('text/head.php');
 													<div class="country_div_passwords"></div>
 												</div>
 												<div class="value">
-													<select id="country" name="country" placeholder="country" title="country" data-placement="bottom" required>
+													<select id="country" name="country" placeholder="country" title="country" data-placement="bottom">(optional)
 														<option value="AF">Afghanistan</option>
 														<option value="AX">Åland Islands</option>
 														<option value="AL">Albania</option>

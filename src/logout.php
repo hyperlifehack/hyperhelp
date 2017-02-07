@@ -1,7 +1,6 @@
 <?php
 $session_valid = false;
-// log em out
-$_COOKIE["hyperhelp"] = null;
+setcookie("hyperhelp", "", time()-3600); // delete cookie = log em out
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -30,7 +30,7 @@ if(isset($_REQUEST["SetProfilePicture"]))
 	$user = config::get('lib_mysqli_commands_instance')->GetUserByActivation($_SESSION["activation"]);
 	if(isset($user))
 	{
-		if(($user->id == $_SESSION["UserID"]) && ($user->activation == $_SESSION["activation"]))
+		if(($user->id == $_SESSION["UserID"]) && ($user->activation == $_SESSION["activation"]) && ($user->RandomID == $_SESSION["RandomID"]))
 		{
 			$user->profilepicture = $_REQUEST["SetProfilePicture"];
 			$user = config::get('lib_mysqli_commands_instance')->UserEdit($user); // update the existing user with profilepicture path
