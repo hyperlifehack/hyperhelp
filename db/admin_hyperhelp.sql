@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 13, 2017 at 10:19 PM
+-- Generation Time: Feb 07, 2017 at 10:07 PM
 -- Server version: 5.5.31
 -- PHP Version: 5.4.4-14+deb7u3
 
@@ -17,30 +17,28 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `db_hyperhelp`
+-- Database: `admin_hyperhelp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `groups`
+-- Table structure for table `actions`
 --
 
-CREATE TABLE IF NOT EXISTS `groups` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `groupname` text NOT NULL,
-  `system` tinyint(1) NOT NULL COMMENT 'if this is a default system group, that should never be deleted',
-  `mail` text NOT NULL,
-  `profilepicture` text NOT NULL,
+CREATE TABLE IF NOT EXISTS `actions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `RandomID` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `username_id` bigint(20) NOT NULL,
+  `howmany_minutes` bigint(20) NOT NULL,
+  `to_whom` varchar(255) NOT NULL,
+  `to_whom_id` bigint(20) NOT NULL,
+  `what` text NOT NULL,
+  `what_id` bigint(20) NOT NULL,
+  `when` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=404 ;
-
---
--- Dumping data for table `groups`
---
-
-INSERT INTO `groups` (`id`, `groupname`, `system`, `mail`, `profilepicture`) VALUES
-(403, 'user', 0, '', '');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
