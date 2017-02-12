@@ -2,10 +2,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>hyperhelp.org - want to help?</title>
+<title><?php echo config::get('platform_name'); ?> - want to help?</title>
 
-<meta lang="en" name="description" content="hyperhelp.org is a Platform, were committed people so called do-gooder can anonymously (use the tor browser bundle!) track their (moneyless) efforts and commitment to society - to make it transparent to society and hopefully valued." />
-<meta lang="de" name="description" content="hyperhelp.org ist eine Platform, welche es dem engagierten Gutmenschen / Ehrenamtlichen erlaubt ihre eigene (Geldlosen) Leistungen an der Gesellschaft zu erfassen und auszuwerten und das ganze auch anonym. (Tor Bundle Browser verwenden!)" />
+<meta lang="en" name="description" content="<?php echo config::get('platform_name'); ?> is a Platform, were committed people so called do-gooder can anonymously (use the tor browser bundle!) track their (moneyless) efforts and commitment to society - to make it transparent to society and hopefully valued." />
+<meta lang="de" name="description" content="<?php echo config::get('platform_name'); ?> ist eine Platform, welche es dem engagierten Gutmenschen / Ehrenamtlichen erlaubt ihre eigene (Geldlosen) Leistungen an der Gesellschaft zu erfassen und auszuwerten und das ganze auch anonym. (Tor Bundle Browser verwenden!)" />
 
 <meta lang="en" name="keywords" content="Book-keeping, do-gooder, committed, commitment, capture, time recording" />
 <meta lang="de" name="keywords" content="Buchhaltung, Gutmensch, engagiert, engagement, festhalten, erfassen, zeitcapture" />

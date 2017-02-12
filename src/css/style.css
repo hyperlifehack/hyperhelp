@@ -168,7 +168,6 @@ button {
     background-color: #5bc0de;
     border: 1px solid #46b8da;
     border-radius: 20px;
-    cursor: pointer;
     font-size: 20px;
     text-align: center;
     color: white;
@@ -179,7 +178,6 @@ button {
     background-color: #5bc0de;
     border: 1px solid #46b8da;
 	border-radius: 20px;
-    cursor: pointer;
     font-size: 20px;
     height: 40px;
     line-height: 40px;
@@ -325,6 +323,10 @@ title {
 	position: relative;
 	width: 50%;
 	text-align: left;
+}
+
+input {
+	width: 100%;
 }
 
 #map {

@@ -14,18 +14,23 @@ which holds only the records for your project
 
 === needhelp.php ===
 
+o basically a dashboard for "job" descriptions
+
 a map http://leafletjs.com/reference.html were you can see who around you would need some help
 
 === offerhelp.php ===
 
-a map http://leafletjs.com/reference.html were people offer what services around you
+o basically a dashboard people and the skills they can offer
+e.g. "i can work with wood and turn it into spoons" <- cool. next time someone searches for "spoon" he should find this entry.
 
+a map http://leafletjs.com/reference.html were people offer what services around you
 
 === unit ===
  
 o you should be able to define your own "units" besides minutes like 1x "TortCoins" = 1x peace of vegan cake = 1x Minute of your precious life = 1... :-D
 
 === 5-star-rating system ===
+
 oo whenever there is an action performed, the receiving user get's an email "action this and that was performed by ... please rate and comment on that action" 
 
 === sync with other installations ===

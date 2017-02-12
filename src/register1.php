@@ -56,7 +56,7 @@ if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "register"))
 			/* remember activation key */
 			$_SESSION["activation"] = $user->activation;
 			
-			/* send activation Mail (optional on LAN systems) */
+			/* send activation Mail to User (optional LAN Systems without internet) */
 			$from = config::get('mail_admin');
 			$to = $user->mail;
 			$subjet = "Activation of your Account@".config::get('platform_name');
@@ -73,6 +73,27 @@ to activate your account/verify your mail.<br>
 Thanks for contributing!<br>
 
 Yours sincerelly 
+<a href="'.config::get('platform_url').'">'.config::get('platform_url').'</a>
+</body>
+</html>
+';
+			$answer = $answer." <br> ".sendMail($to,$from,$subjet,$text);
+
+			/* send "new-user-has-registered" Mail to admin */
+			$from = config::get('mail_admin');
+			$to = config::get('mail_admin');
+			$subjet = "new-user-has-registered@".config::get('platform_name');
+			$text = '
+<html>
+<body>
+Dear Admin,<br>
+Thanks for hosting this instance.<br>
+A new user has registered! :)<br>
+username:'.$user->username.',<br>
+<br>
+<br>		
+Thanks for contributing!<br>
+Yours sincerelly<br>
 <a href="'.config::get('platform_url').'">'.config::get('platform_url').'</a>
 </body>
 </html>
@@ -114,7 +135,7 @@ include('text/head.php');
 		
 								<div class="table">
 									<!-- user add/edit form -->
-									<form class="form-register" action="register1.php">
+									<form action="register1.php">
 										<!-- profilepicture -->
 										<input name="action" value="register" hidden>
 									

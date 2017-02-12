@@ -122,15 +122,13 @@ if($valid_login)
 <body id="body">
 	<div id="parent">
 		<div class="centered">
-			<!-- explanation text -->
-			<div id="headline" class="boxShadows" title="for security: works without Javascript :-D">
+			<div id="headline" class="boxShadows">
 				<h1>
-					<div id="headline_text">hyperhelp.org</div>
+					<div id="headline_text"><a href="http<?php if(config::get('force_ssl')) echo "s" ?>://<?php echo config::get('platform_name'); ?>"><?php echo config::get('platform_name'); ?></a></div>
 				</h1>
 				<p>Thank you - for your Commitment to your Community! :)</p>
 				<p><a href="https://github.com/hyperlifehack/hyperhelp.org" target="_blank">(100% Transparent! Download OpenSource here!)</a></p>
 			</div>
-			<!-- explanation text end -->
 
 			<!-- login -->
 			<div class="element">
@@ -179,12 +177,12 @@ if($valid_login)
 						</div>
 
 						<div class="column100">
-							<input type="submit" name="login" value="login" class="button" style="width: 100%; height: 40px;"/>
+							<input type="submit" name="login" value="login" class="button clickable" style="width: 100%; height: 40px;"/>
 						</div>
 					</form>
 					<div class="column100">
 						<a href="register1.php">
-							<div class="button_div" style="width: 100%;"><p>new here? -> register as new user</p></div>
+							<div class="button_div clickable" style="width: 100%;"><p>new here? -> register</p></div>
 						</a>
 					</div>
 				</div>
@@ -196,7 +194,7 @@ if($valid_login)
 					<div class="element">
 						<div id="headline" style="margin-top: 0px;" class="boxShadows" title="for security: works without Javascript :-D">
 							<h2>
-								<div id="headline_text">ErklärVideo</div>
+								<div id="headline_text">about:</div>
 							</h2>
 						</div>
 								
@@ -206,11 +204,25 @@ if($valid_login)
 									<div class="line">
 										<img src="images/youtube.jpg" style="max-width: 100%;"/>
 										<!-- <iframe width="100%" height="400px" src="https://www.youtube.com/embed/lJy_tAm9IJQ" frameborder="0" allowfullscreen></iframe>  -->
-										<strong><p>What is it all about?</p></strong>
-										<p><a href="https://HyperHelp.org">HyperHelp.org</a> wants to offer a platform for cooperation.</p>
+										<p><a href="https://<?php echo config::get('platform_name'); ?>"><?php echo config::get('platform_name'); ?></a> wants to offer a platform for cooperation.</p>
 										<p>You can do book-keeping of your commitment to your community, mankind, the planet and make it transparent to your community - so it can be valued :)</p>
 										<strong><p>German:</p></strong>
 										<p>Hier kannst Du dein Engagement erfassen, <br> damit es gewertschätzt und nicht vergessen wird :)</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="element_content">
+							<div class="table">
+								<div class="column100">
+									<div class="line">
+										<div id="headline" style="margin-top: 0px;" class="boxShadows" title="for security: works without Javascript :-D">
+											<h2>
+												<div id="headline_text">For Your Privacy & Security:</div>
+											</h2>
+										</div>
+										<p><a href="https://www.torproject.org/projects/torbrowser.html.en" target="_blank">TorBundle</a> is recommended to use this platform anonymously, it includes Addons: <a href="https://noscript.net/" target="_blank">NoScript</a> (this platform completely operates without JavaScript, so it will work just fine) and <a href="https://www.eff.org/https-everywhere" target="_blank">SSLAnywhere</a> which will enforce SSL usage.</p>
 									</div>
 								</div>
 							</div>

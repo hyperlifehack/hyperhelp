@@ -1,14 +1,16 @@
 ==== HyperHelp.org TestDocumentation ====
 
-All these steps must be performed successfully before releasing it to the public/confronting the user.
+All these steps must be performed successfully before releasing it to the public/confronting the user/admin with an update.
 
 === register1.php ===
 
 ok 1. register as new user,
 ok if the required details (username, password, mail) are entered,
 ok it should create a new user, generating an ActivationID that is also saved inside $_SESSION["activation"] and mailed to the user. (activation-link)
+ok at the same time the admin should get an mail with subjet: "new-user-has-registered@platform_name"
 
-right now it is ok and possible to immediately login, without clicking any activation-link, which is also needed if the server is not connected to the internet.
+right now it is ok and possible to immediately login, without clicking any activation-link,
+which is also needed if the server is not connected/accessible to/by internet and no activation-mails can be send to the user.
 
 o 1.1. misstype second password -> should return error message
 o 1.2. do not enter username -> should return error message
@@ -56,3 +58,11 @@ Please click on http://domain.com/activation.php?code=NJh5APeYv_FHpu0q
 to activate your account/verify your mail.
 
 Thanks for contributing!
+
+=== setup.php ===
+
+should be a very simplified and minimalistic way of getting your instance to work.
+
+o 6.1. upload a platform logo
+o 6.2. type in your db_username and db_password and admin@mail.com and you should be ready to go.
+o 6.3. define a unit of meassurement (usually it is minutes)

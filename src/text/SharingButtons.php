@@ -4,14 +4,14 @@
 						<div class="element_content">
 							<div class="shariff shariff-main"
 								data-services="facebook%7Ctwitter%7Cgoogleplus"
-								data-url="http%3A%2F%2Fhyperhelp.org%2F"
+								data-url="http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F"
 								data-timestamp="1475015147"
-								data-backendurl="http://hyperhelp.org/wp-json/shariff/v1/share_counts?">
+								data-backendurl="http://<?php echo config::get('platform_name'); ?>/wp-json/shariff/v1/share_counts?">
 								<ul
 									class="shariff-buttons theme-default orientation-horizontal buttonsize-medium">
 									<li class="shariff-button mailto"
 										style="background-color: #a8a8a8"><a
-										href="mailto:?body=http%3A%2F%2Fhyperhelp.org%2F&amp;subject=hyperhelp.org"
+										href="mailto:?body=http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F&amp;subject=<?php echo config::get('platform_name'); ?>"
 										title="Send by email" aria-label="Send by email"
 										role="button" rel="noopener nofollow" class="shariff-link"
 										style="background-color: #999; color: #fff"><span
@@ -22,7 +22,7 @@
 											class="shariff-text">e-mail</span>&nbsp;</a></li>
 									<li class="shariff-button diaspora"
 										style="background-color: #b3b3b3"><a
-										href="https://share.diasporafoundation.org/?url=http%3A%2F%2Fhyperhelp.org%2F&amp;title=hyperhelp.org"
+										href="https://share.diasporafoundation.org/?url=http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F&amp;title=<?php echo config::get('platform_name'); ?>"
 										title="Share on Diaspora" aria-label="Share on Diaspora"
 										role="button" rel="noopener nofollow" class="shariff-link"
 										target="_blank" style="background-color: #999; color: #fff"><span
@@ -33,7 +33,7 @@
 											class="shariff-text">share</span>&nbsp;</a></li>
 									<li class="shariff-button facebook"
 										style="background-color: #4273c8"><a
-										href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fhyperhelp.org%2F"
+										href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F"
 										title="Share on Facebook" aria-label="Share on Facebook"
 										role="button" rel="noopener nofollow" class="shariff-link"
 										target="_blank"
@@ -45,7 +45,7 @@
 											class="shariff-text">share</span>&nbsp;</a></li>
 									<li class="shariff-button twitter"
 										style="background-color: #32bbf5"><a
-										href="https://twitter.com/share?url=http%3A%2F%2Fhyperhelp.org%2F&amp;text=hyperhelp.org"
+										href="https://twitter.com/share?url=http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F&amp;text=<?php echo config::get('platform_name'); ?>"
 										title="Share on Twitter" aria-label="Share on Twitter"
 										role="button" rel="noopener nofollow" class="shariff-link"
 										target="_blank"
@@ -57,7 +57,7 @@
 											class="shariff-text">tweet</span>&nbsp;</a></li>
 									<li class="shariff-button googleplus"
 										style="background-color: #f75b44"><a
-										href="https://plus.google.com/share?url=http%3A%2F%2Fhyperhelp.org%2F"
+										href="https://plus.google.com/share?url=http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F"
 										title="Share on Google+" aria-label="Share on Google+"
 										role="button" rel="noopener nofollow" class="shariff-link"
 										target="_blank"
@@ -69,7 +69,7 @@
 											class="shariff-text">share</span>&nbsp;</a></li>
 									<li class="shariff-button whatsapp shariff-mobile"
 										style="background-color: #5cbe4a"><a
-										href="whatsapp://send?text=hyperhelp.org%20http%3A%2F%2Fhyperhelp.org%2F"
+										href="whatsapp://send?text=<?php echo config::get('platform_name'); ?>%20http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F"
 										title="Share on WhatsApp" aria-label="Share on WhatsApp"
 										role="button" rel="nofollow" class="shariff-link"
 										target="_blank"
@@ -81,7 +81,7 @@
 											class="shariff-text">share</span>&nbsp;</a></li>
 									<li class="shariff-button threema shariff-mobile"
 										style="background-color: #4fbc24"><a
-										href="threema://compose?text=hyperhelp.org%20http%3A%2F%2Fhyperhelp.org%2F"
+										href="threema://compose?text=<?php echo config::get('platform_name'); ?>%20http%3A%2F%2F<?php echo config::get('platform_name'); ?>%2F"
 										title="Share on Threema" aria-label="Share on Threema"
 										role="button" rel="nofollow" class="shariff-link"
 										target="_blank"
@@ -93,7 +93,7 @@
 											class="shariff-text">share</span>&nbsp;</a></li>
 									<li class="shariff-button rss"
 										style="background-color: #ff8c00"><a
-										href="http://hyperhelp.org/feed/" title="rss feed"
+										href="http://altcoopsys.org/feed/" title="rss feed"
 										aria-label="rss feed" role="button" rel="noopener nofollow"
 										class="shariff-link" target="_blank"
 										style="background-color: #fe9312; color: #fff"><span
