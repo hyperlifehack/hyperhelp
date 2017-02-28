@@ -263,6 +263,11 @@ $NewRecord->key3 = "value3";
 $lib_mysqli_commands_instance->RecordAdd("datarecord",$NewRecord); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
 success();
 
+comment("test if record exists");
+RecordExists("key2","value2");
+comment("test how m any record with this key = value exists (should return 1)");
+RecordCount("key2","value2");
+
 // recordchange
 comment("RecordEdit: change record");
 $NewRecord->key2 = "newvalue2";

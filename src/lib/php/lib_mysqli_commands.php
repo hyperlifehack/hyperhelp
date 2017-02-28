@@ -973,6 +973,48 @@ class lib_mysqli_commands extends lib_mysqli_interface {
 		return lib_mysqli_interface::get('worked');
 	}
 	
+	/* returns true if record with given key = value properties exists */
+	public function RecordExists($table = null, $UniqueKey = "id",$UniqueValue = "")
+	{
+		$output = false;
+		
+		if(is_null($table))
+		{
+			return error("function RecordExists: parameter \$table missing.");
+		}
+
+		$query = "SELECT * FROM `".$table."` WHERE `".$UniqueKey."` = '".$UniqueValue."';";
+		$record_array = config::get('lib_mysqli_interface_instance')->query($query);
+
+		if($record_array)
+		{
+			$output = true;
+		}
+
+		return $output;
+	}
+	
+	/* count the amount of records with given key = value properties */
+	public function RecordCount($table = null, $UniqueKey = "id",$UniqueValue = "")
+	{
+		$output = 0;
+		
+		if(is_null($table))
+		{
+			return error("function RecordCount: parameter \$table missing.");
+		}
+
+		$query = "SELECT * FROM `".$table."` WHERE `".$UniqueKey."` = '".$UniqueValue."';";
+		$record_array = config::get('lib_mysqli_interface_instance')->query($query);
+
+		if($record_array)
+		{
+			$output = count($record_array);
+		}
+		
+		return $output;
+	}
+
 	/* returns an array of all records available (if no parameter given)
 	 *
 	* if $record given -> get $record as assoc-array

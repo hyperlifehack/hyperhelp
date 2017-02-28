@@ -56,8 +56,8 @@ config::set("db_srv_address","localhost");				# address of database server
 config::set("db_datasource","mysql");					# right now can only be "mysql", could be postgress (not implemented) sqlite (not implemented)
 config::set("db_name","admin_hyperhelp");					# the database one will deal with, for conveniance same name as platform
 config::set("db_charset","utf8");						# if you want special chars to be properly displayed in the database/phpmyadmin etc.
-config::set("db_user","DatabaseUsername");							# what database user to use for accessing the database
-config::set("db_pass","HighlyComplexPassword");							# what database password to use for accessing the database
+config::set("db_user","root");							# what database user to use for accessing the database
+config::set("db_pass","root");							# what database password to use for accessing the database
 config::set("db_auth_table","passwd"); 					# name of table where platform"s usernames & passwords (md5 hashed) are stored (passwd)
 config::set("db_groups_table","groups");				# what the table is called, where the groups are stored (groups)
 

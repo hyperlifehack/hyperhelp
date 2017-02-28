@@ -134,7 +134,7 @@ if($valid_login)
 			<div class="element">
 				<div class="title"><h2>login:</h2></div>
 				<div class="element_content">
-					<form class="form-signin" action="index.php#login">
+					<form action="index.php#login">
 						<input name="action" value="login" hidden>
 						<div class="table">
 							<div class="column100">

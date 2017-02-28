@@ -70,21 +70,6 @@ function parse_date2timestamp($datum)
 	return $TimeStamp; //returns: 1483052400
 }
 
-/* remember what was entered in the form, as session */
-function remember_value($value)
-{
-	if (isset ( $_REQUEST [$value] ))
-	{
-		$_SESSION[$value] = $_REQUEST[$value];
-		echo $_REQUEST[$value];
-	}
-	else
-	{
-		// if value was entered previously
-		if(isset($_SESSION[$value])) echo $_SESSION[$value];
-	}
-}
-
 /* verify all input and insert the record (to listen to some music) */
 function capture($users)
 {
@@ -228,10 +213,10 @@ if($refresh_page)
 								<div id="headline_text">capture action</div>
 							</h1>
 							<h2><div style="background-color: white; color: red;"><?php echo $status_capture; ?></div></h2>
-							<a style="color: white;" href="logout.php">(logout)</a>
+							<?php include("text/menu.php"); ?>
 						</div>
 						<div class="element_content">
-							<form class="form-signin" action="capture.php">
+							<form action="capture.php">
 								<input name="action" value="capture" hidden>
 								<h2>Who?</h2>
 								<h1>

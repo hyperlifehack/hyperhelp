@@ -6,6 +6,7 @@ setcookie("hyperhelp", "", time()-3600); // delete cookie = log em out
 <html lang="en">
 <head>
 <?php
+include_once 'config.php';
 include('text/head.php');
 ?>
 </head>

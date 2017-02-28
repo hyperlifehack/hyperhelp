@@ -33,7 +33,7 @@ if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "setup"))
 		
 		if(!$fh)
 		{
-			$answer = "can't open ".$fileName." file";
+			$answer = $answer." can't open ".$fileName." file";
 		}
 		else
 		{
@@ -129,13 +129,86 @@ $filename_and_ending = explode(".", $filename_and_ending);
 config::set("current_filename", $filename_and_ending[0]); // automatically load filename.js
 */
 ?>';
+			fwrite($fh, $config_text);
+			fclose($fh);
+			$answer = $answer.' all settings saves successfully! :) should setup.php now be <a href="setup.php?action=delete">deleted? (recommended)</a>';
 
-fwrite($fh, $config_text);
-fclose($fh);
-$answer = 'all settings saves successfully! :) should setup.php now be <a href="setup.php?action=delete">deleted? (recommended)</a>';
+			/* === flesh out the database === DOES NOT WORK YET, NO TIME, DB needs to be created otherwise, phpmyadmin? 
+			if(loadSQLFromFile($_REQUEST['db_name']))
+			{
+				$answer = $answer." successfully created the initial database.";
+			}
+			else
+			{ 
+				$answer = $answer." something went wrong during creation of initial database.";
+			}
+			*/
 		}
 	}
 }
+
+/* load sql-commands from a sql file
+function loadSQLFromFile($DatabaseName)
+{
+	// ini_set ( 'memory_limit', '512M' );
+	// set_time_limit ( 0 );
+
+	// === restart ===
+	// include('config.php');
+	
+	require_once('./lib/php/lib_mysqli_commands.php');	// library needed to access database
+	
+	// init database
+	config::set('lib_mysqli_interface_instance',new lib_mysqli_interface()); // create instance from class and store reference to this instance in config for reuse
+	config::set('lib_mysqli_commands_instance',new lib_mysqli_commands()); // create instance from class and store reference to this instance in config for reuse
+	
+	require_once('./lib/php/lib_security.php');			// will mysql-real-escape all input
+	// === header ends === 
+
+	$worked = false;
+	$output = "";
+
+	$sql_query = "";
+
+	// read line by line
+	$lines = file("db/admin_hyperhelp.sql"); // loads and runs the file line by line, but ignores all CREATE_DATABASE stuff (Database should already exist)
+	$count = count($lines);
+
+	for($i = 0;$i<$count;$i++)
+	{
+		$line = $lines[$i];
+		$line = str_replace("admin_hyperhelp", $DatabaseName, $line); // replace databasename with the one given
+		$cmd3 = substr($line, 0, 3);
+		$cmd4 = substr($line, 0, 4);
+		$cmd6 = substr($line, 0, 6);
+
+		if($cmd3 == "USE")
+		{
+			// cut away USE ``;
+			config::set('name',substr($line, 5, -3));
+		}
+		else if($cmd4 == "DROP")
+		{
+			config::get('mysqli_object')->query($line); // execute this line
+		}
+		else if(($cmd6 == "INSERT") || ($cmd6 == "CREATE"))
+		{
+			// sum all lines up until ; is detected
+			$multiline = $line;
+			while(!strstr($line, ';'))
+			{
+				$i++;
+				$line = $lines[$i];
+				$multiline .= $line;
+			}
+			$multiline = str_replace("\n", "", $multiline); // remove newlines/linebreaks
+			config::get('mysqli_object')->query($multiline); // execute this line
+		}
+	}
+
+	return $worked;
+}
+*/
 
 /* test if all required input values have been send if not, abort and output a message */
 function testIfExists($array,$property)
@@ -146,12 +219,12 @@ function testIfExists($array,$property)
 	{
 		if(empty($array[$property]))
 		{
-			$answer = $property." can not be empty.";
+			$answer = $answer." ".$property." can not be empty.";
 		}
 	}
 	else
 	{
-		$answer = $property." is missing.";
+		$answer = $answer." ".$property." is missing.";
 	}
 }
 
@@ -219,7 +292,7 @@ if(isset($_FILES["fileToUpload"]))
 	{
 		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file))
 		{
-			$answer = "Awesome Logo! :)";
+			$answer = $answer." Awesome Logo! :)";
 			$_SESSION['platform_logo'] = $target_file; // save temporarily for later saving into config.php
 		}
 		else
@@ -281,7 +354,7 @@ include('text/head.php');
 										<?php
 										if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "delete"))
 										{
-											$answer = 'this file you are seeing just got deleted. Please proceed to <a href="register1.php">register your first user :)</a> ';
+											$answer = $answer.' this file you are seeing just got deleted. Please proceed to <a href="register1.php">register your first user :)</a> ';
 										}
 										echo $answer;
 										?>

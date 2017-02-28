@@ -184,3 +184,18 @@ function log2file($file,$this)
 	$cwd = getcwd();
 	file_put_contents($file, $line, FILE_APPEND);
 }
+
+/* remember what was entered in the form, as session */
+function remember_value($value)
+{
+	if (isset ( $_REQUEST [$value] ))
+	{
+		$_SESSION[$value] = $_REQUEST[$value];
+		echo $_REQUEST[$value];
+	}
+	else
+	{
+		// if value was entered previously
+		if(isset($_SESSION[$value])) echo $_SESSION[$value];
+	}
+}
