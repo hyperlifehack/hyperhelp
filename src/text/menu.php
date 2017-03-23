@@ -1,6 +1,6 @@
 							 <!-- NavMenu MainMenu -->
 							 <div class="dropdown">
-								 <a href="have.php">
+								 <a href="myskills.php">
 								  	<button class="dropbtn">My Skills</button>
 								 </a>
 							  <!--  
@@ -12,7 +12,7 @@
 							   -->
 							</div>
 							 <div class="dropdown">
-								 <a href="need.php">
+								 <a href="needskills.php">
 								  	<button class="dropbtn">Need Skill</button>
 								 </a>
 							  <!--  

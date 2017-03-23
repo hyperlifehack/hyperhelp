@@ -1069,22 +1069,7 @@ class lib_mysqli_commands extends lib_mysqli_interface {
 
 		if(!empty($query))
 		{
-			$record_array = config::get('lib_mysqli_interface_instance')->query($query);
-		
-			if(isset($record_array))
-			{
-				if(count($record_array) <= 1)
-				{
-					if(isset($record_array[0]))
-					{
-						$output = $record_array[0];
-					}
-				}
-				else
-				{
-					$output = $record_array; // multiple records returned
-				}
-			}
+			$output = config::get('lib_mysqli_interface_instance')->query($query); // always return array of records, even if there is only one record returned, otherwise return null
 		}
 
 		lib_mysqli_interface::set('output',$output);

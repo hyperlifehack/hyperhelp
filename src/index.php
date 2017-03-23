@@ -88,22 +88,6 @@ function parse_date2timestamp($datum)
 	
 	return $TimeStamp; //returns: 1483052400
 }
-
-/* remember what was entered in the form, as session */
-function remember_value($value)
-{
-	if (isset ( $_REQUEST [$value] ))
-	{
-		$_SESSION[$value] = $_REQUEST[$value];
-		echo $_REQUEST[$value];
-	}
-	else
-	{
-		// if value was entered previously
-		if(isset($_SESSION[$value])) echo $_SESSION[$value];
-	}
-}
-
 ?>
 
 <!DOCTYPE html>

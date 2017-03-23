@@ -144,9 +144,8 @@ function capture($users)
 	}
 
 	$NewRecord = config::get('lib_mysqli_commands_instance')->RecordAdd("actions",$NewRecord); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
-	$test = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record // DOES THIS REALLY WORK?
-	$NewRecord->id = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record
-		
+	// $AutoIncrementID_of_last_created_record = config::get('lib_mysqli_interface_instance')->get('last_id'); // get id of last inserted record // this is just for testing, $NewRecord->id works as well.
+
 	// store what as template
 	if(isset($_REQUEST['store_what_as_template']))
 	{
@@ -155,10 +154,12 @@ function capture($users)
 		$NewAction->keyword = $_REQUEST['what'];
 	
 		$ActionExists = config::get('lib_mysqli_commands_instance')->records("action_templates",$NewAction,"keyword");
+		$ActionExists = GetFirstElementOfArray($ActionExists);
+
 		if($ActionExists)
 		{
 			// check if user is not allready associated with this action
-			if (strpos($ActionExists->users, $logged_in_user->username) !== false)
+			if(strpos($ActionExists->users, $logged_in_user->username) !== false)
 			{
 				// do nothing, user is allready associated with this action
 			}
