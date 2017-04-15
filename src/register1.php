@@ -10,6 +10,9 @@ config::set('lib_mysqli_commands_instance',new lib_mysqli_commands()); // create
 require_once('./lib/php/lib_security.php');			// will mysql-real-escape all input
 require_once('./lib/php/lib_session.php');			// check if user is allowed to access this page
 require_once('./lib/php/mail.php');					// to send mails
+
+$redirect = false;
+
 /*=== header ends ===*/
 
 $answer = ""; // feedback for user
@@ -48,8 +51,10 @@ if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "register"))
 		{
 			$user->RandomID = salt(); // random id that hopefully uniquely identifies users accross multiple servers
 			$user = config::get('lib_mysqli_commands_instance')->UserAdd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
-			$answer = 'registration successfull! You got the RandomID "'.$user->RandomID.'" / UserID "'.$user->id.'" :) - you can <a href="index.php">login</a> now - or continue with <a href="register2.php">uploading a ProfilePicture</a>';
-			
+			$answer = 'registration successfull! <br> Your user was asigned RandomID "'.$user->RandomID.'" / UserID "'.$user->id.'" :) <br> continue to <a href="register2.php">profile picture upload</a>';
+
+			$redirect = true;
+
 			/* remember UserID */
 			$_SESSION["UserID"] = $user->id;
 			$_SESSION["RandomID"] = $user->RandomID;
@@ -98,7 +103,7 @@ Yours sincerelly<br>
 </body>
 </html>
 ';
-			$answer = $answer." <br> ".sendMail($to,$from,$subjet,$text);
+			sendMail($to,$from,$subjet,$text);
 		}
 	}
 }
@@ -109,6 +114,11 @@ Yours sincerelly<br>
 <head>
 <?php
 include('text/head.php');
+
+if($redirect)
+{
+	echo '<meta http-equiv="refresh" content="5;URL=register2.php"/>';
+}
 ?>
 </head>
 

@@ -99,7 +99,7 @@ include('text/head.php');
 // if logged in, redirect to capture
 if($valid_login)
 {
-	echo '<meta http-equiv="refresh" content="3;URL=capture.php"/>';
+	echo '<meta http-equiv="refresh" content="0;URL=capture.php"/>';
 }
 ?>
 </head>
@@ -234,9 +234,15 @@ if($valid_login)
 
 									if(isset($units_total))
 									{
-										$hours = round($units_total / 60);
-										$days = round($hours / 24);
-										$months = round($days / 30);
+										$months = ($units_total - $units_total % 43200) / 43200;
+										
+										$units_total = $units_total - $months *  43200; // calculate what is left
+										
+										$days = ($units_total - $units_total % 1440) / 1440;
+										
+										$units_total = $units_total - $days *  1440; // calculate what is left
+										
+										$hours = ($units_total - $units_total % 60) / 60;
 	echo '
 										<div class="column100">
 											<div class="line">

@@ -86,6 +86,10 @@ ul li {
     color: crimson;
 }
 
+a {
+    color: white;
+}
+
 a:visited  {
     color: crimson;
 }

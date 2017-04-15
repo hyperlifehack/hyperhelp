@@ -9,6 +9,9 @@ config::set('lib_mysqli_commands_instance',new lib_mysqli_commands()); // create
 
 require_once('./lib/php/lib_security.php');			// will mysql-real-escape all input
 require_once('./lib/php/lib_session.php');			// check if user is allowed to access this page
+
+$redirect = false;
+
 /*=== header ends ===*/
 
 $answer = ""; // feedback for user
@@ -33,8 +36,12 @@ if(isset($_REQUEST["SetProfilePicture"]))
 		if(($user->id == $_SESSION["UserID"]) && ($user->activation == $_SESSION["activation"]) && ($user->RandomID == $_SESSION["RandomID"]))
 		{
 			$user->profilepicture = $_REQUEST["SetProfilePicture"];
+			$target_file = $_REQUEST["SetProfilePicture"]; // sync
+
 			$user = config::get('lib_mysqli_commands_instance')->UserEdit($user); // update the existing user with profilepicture path
-			$answer = 'success! :) pleace check your mail, then <a href="index.php">login!</a>';
+			$answer = 'success! :) <br> pleace check your mail! <br> You will be redirected to <a href="index.php">login!</a>';
+
+			$redirect = true; // redirect to index.php (login)
 		}
 		else
 		{
@@ -143,6 +150,11 @@ function getMaximumFileUploadSize()
 <head>
 <?php
 include('text/head.php');
+
+if($redirect)
+{
+	echo '<meta http-equiv="refresh" content="5;URL=index.php"/>';
+}
 ?>
 </head>
 
