@@ -7,40 +7,52 @@ All these steps must be performed successfully before releasing it to the public
 ok 1. register as new user,
 ok if the required details (username, password, mail) are entered,
 ok it should create a new user, generating an ActivationID that is also saved inside $_SESSION["activation"] and mailed to the user. (activation-link)
-ok at the same time the admin should get an mail with subjet: "new-user-has-registered@platform_name"
+o at the same time the admin should get an mail with subjet: "new-user-has-registered@platform_name"
 
-right now it is ok and possible to immediately login, without clicking any activation-link,
+right now it is possible to immediately login, without clicking any activation-link,
 which is also needed if the server is not connected/accessible to/by internet and no activation-mails can be send to the user.
 
-o 1.1. misstype second password -> should return error message
-o 1.2. do not enter username -> should return error message
+ok 1.1. misstype second password -> should return error message
+ok 1.2. do not enter username -> should return error message
+ok 1.3. test for sql injection (is not possible because per default ALL database input get's mysql-real-escaped)
+
+example for sql injection:
+
+0;
+UPDATE user SET Password=PASSWORD('crack') WHERE user='root';
+FLUSH PRIVILEGES;
 
 === register2.php === 
 
-o 1.3. it is optional to upload a profile-picture, but it should also work from mobile phones.
-o 1.3.1. user clicks on browser and selects a *.jpg, *.png or *.bmp or even a *.gif, then clicks upload, the picture should be uploaded and displayed
-o 1.3.2. user clicks on "set this as my profilepicture"
+ok 1.3. it is optional to upload a profile-picture, but it should also work from mobile phones.
+... should work, only possible problem could be browser. (mobile firefox app on android works)
+
+ok 1.3.1. user clicks on browser and selects a *.jpg, *.png or *.bmp or even a *.gif, then clicks upload, the picture should be uploaded and displayed
+
+ok 1.3.2. user clicks on "set this as my profilepicture" and you should be redirected to login after 3 seconds
 
 === 2. index.php ===
 
-o 2. check if the TopList is displayed
+ok 2. check if the TopList is displayed
 list with all users and one white star per every hour donated, one blue star per every day one red star per every month
 
-o 2.1. check if you can login as new user
+ok 2.1. check if you can login as new user
 
 === 3. capture.php ===
 
-o 3.1. capture action,
+ok 3.1. capture action,
 if all detailes are entered it should return the RecordID / RandomID that it created the record with,
 signaling the user "your progress is saved", then refreshes the page so you can capture another of your benevolent contributions to your community.
 
-o 3.1.0. check if all details have been written to the database table "actions" 
+ok 3.1.0. check if all details have been written to the database table "actions" 
 
 o 3.1.1. no minutes selected/entered -> should return error message
 
 o 3.1.2. no action selected/entered -> should return error message
 
 o 3.1.3. no to_whom selected/entered -> should return error message
+
+o 3.1.4. it should not be possible to insert stuff as <img src="http://hd.wallpaperswide.com/thumbs/nordic_landscape-t2.jpg"> or javascript to be inserted (and then possibly displayed at some later output)
 
 
 === 4. logout.php ===

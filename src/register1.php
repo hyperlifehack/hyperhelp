@@ -38,57 +38,71 @@ if(isset($_REQUEST["action"]) && ($_REQUEST["action"] == "register"))
 	}
 	else
 	{
-		$user->username = $_REQUEST["username"];
-		$user->mail = $_REQUEST["mail_address"];
-		$user->password = $_REQUEST["password"];
-		$user->country = $_REQUEST["country"];
-	
-		if(config::get('lib_mysqli_commands_instance')->UserExist($user,"username"))
+		// validate e-mail address (no special chars like <div some evil javascript stuff> allowed.
+		if(!filter_var($_REQUEST["mail_address"], FILTER_VALIDATE_EMAIL))
 		{
-			$answer = "register"." error"." error"." very sorry the username \"".$user->username."\" is already taken :( please try a different one.";
+			$answer = "The given email address seems invalid, please try again...";
 		}
 		else
 		{
-			$user->RandomID = salt(); // random id that hopefully uniquely identifies users accross multiple servers
-			$user = config::get('lib_mysqli_commands_instance')->UserAdd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
-			$answer = 'registration successfull! <br> Your user was asigned RandomID "'.$user->RandomID.'" / UserID "'.$user->id.'" :) <br> continue to <a href="register2.php">profile picture upload</a>';
-
-			$redirect = true;
-
-			/* remember UserID */
-			$_SESSION["UserID"] = $user->id;
-			$_SESSION["RandomID"] = $user->RandomID;
-			/* remember activation key */
-			$_SESSION["activation"] = $user->activation;
-			
-			/* send activation Mail to User (optional LAN Systems without internet) */
-			$from = config::get('mail_admin');
-			$to = $user->mail;
-			$subjet = "Activation of your Account@".config::get('platform_name');
-			$text = '
+			// validate username - only alphabetic (a...z and A...Z) characters and numbers are allowed
+			if (!(inputvalidation($_REQUEST["username"],"username")))
+			{
+				$answer = "validate username failed - only alphabetic (a...z and A...Z) characters, numbers and minus - and underscore _ are allowed, please try again...";
+			}
+			else
+			{
+				$user->username = $_REQUEST["username"];
+				$user->mail = $_REQUEST["mail_address"];
+				$user->password = $_REQUEST["password"];
+				$user->country = $_REQUEST["country"];
+	
+				if(config::get('lib_mysqli_commands_instance')->UserExist($user,"username"))
+				{
+					$answer = "register"." error"." error"." very sorry the username \"".$user->username."\" is already taken :( please try a different one.";
+				}
+				else
+				{
+					$user->RandomID = salt(); // random id that hopefully uniquely identifies users accross multiple servers
+					$user = config::get('lib_mysqli_commands_instance')->UserAdd($user); // returns the user-object from database, containing a new, database generated id, that is important for editing/deleting the user later
+					$answer = 'registration successfull! <br> Your user was asigned RandomID "'.$user->RandomID.'" / UserID "'.$user->id.'" :) <br> continue to <a href="register2.php">profile picture upload</a>';
+				
+					$redirect = true;
+				
+					/* remember UserID */
+					$_SESSION["UserID"] = $user->id;
+					$_SESSION["RandomID"] = $user->RandomID;
+					/* remember activation key */
+					$_SESSION["activation"] = $user->activation;
+						
+					/* send activation Mail to User (optional LAN Systems without internet) */
+					$from = config::get('mail_admin');
+					$to = $user->mail;
+					$subjet = "Activation of your Account@".config::get('platform_name');
+					$text = '
 <html>
 <body>
 Dear '.$user->username.',<br>
 thank you for registering.<br>
 <br>
 Please click <a href="'.config::get('platform_url').'/activation.php?code='.$user->activation.'">here to activate and verify your mail.</a><br>
-
+			
 to activate your account/verify your mail.<br>
-<br>		
+<br>
 Thanks for contributing!<br>
-
-Yours sincerelly 
+			
+Yours sincerelly
 <a href="'.config::get('platform_url').'">'.config::get('platform_url').'</a>
 </body>
 </html>
 ';
-			$answer = $answer." <br> ".sendMail($to,$from,$subjet,$text);
-
-			/* send "new-user-has-registered" Mail to admin */
-			$from = config::get('mail_admin');
-			$to = config::get('mail_admin');
-			$subjet = "new-user-has-registered@".config::get('platform_name');
-			$text = '
+					$answer = $answer." <br> ".sendMail($to,$from,$subjet,$text);
+				
+					/* send "new-user-has-registered" Mail to admin */
+					$from = config::get('mail_admin');
+					$to = config::get('mail_admin');
+					$subjet = "new-user-has-registered@".config::get('platform_name');
+					$text = '
 <html>
 <body>
 Dear Admin,<br>
@@ -96,14 +110,16 @@ Thanks for hosting this instance.<br>
 A new user has registered! :)<br>
 username:'.$user->username.',<br>
 <br>
-<br>		
+<br>
 Thanks for contributing!<br>
 Yours sincerelly<br>
 <a href="'.config::get('platform_url').'">'.config::get('platform_url').'</a>
 </body>
 </html>
 ';
-			sendMail($to,$from,$subjet,$text);
+					sendMail($to,$from,$subjet,$text);
+				}
+			}
 		}
 	}
 }
@@ -157,7 +173,7 @@ if($redirect)
 												</div>
 												<div class="value">
 													<input id="username" name="username" type="text" required>
-													<div class="error_div_username"></div>
+													<div>(only alphabetic characters and numbers are allowed)</div>
 												</div>
 											</div>
 										</div>

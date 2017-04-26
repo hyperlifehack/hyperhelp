@@ -26,7 +26,7 @@ function getUserIDbyUsername($username,$users)
 	{
 		if($user->username == $username)
 		{
-			$output = $user->id;
+			$output = $user->RandomID;
 			break;
 		}
 	}
@@ -41,7 +41,7 @@ if($logged_in_user)
 	{
 		if($_REQUEST['action'] == "capture")
 		{
-			$output = capture($users);
+			$output = capture($users,$logged_in_user);
 			$status_capture = $status_capture." ".$output["status_capture"];
 			$refresh_page = $output["refresh_page"];
 		}
@@ -71,41 +71,35 @@ function parse_date2timestamp($datum)
 }
 
 /* verify all input and insert the record (to listen to some music) */
-function capture($users)
+function capture($users,$logged_in_user)
 {
 	$output["status_capture"] = null;
 	$output["refresh_page"] = false;
 
 	$NewRecord = config::get('lib_mysqli_commands_instance')->newRecord("actions");
 	
-	if(isset($_REQUEST["username"]) && (!empty($_REQUEST["username"])))
-	{
-		$NewRecord->username = $_REQUEST["username"]; // it is better to not only rely on the username, usernames change, ids not
-	}
-	else
-	{
-		$output["status_capture"] = 'there was no valid username given';
-		return;
-	}
+	$user = config::get('lib_mysqli_commands_instance')->GetUserBySession($_COOKIE["hyperhelp"]); // get user by cookie
+
+	$NewRecord->username = $user->username; // it is better to not only rely on the username, usernames change, ids not
 
 	/* this is an as unique and random as possible id that identifies each action uniquely (the autoIncrementIDs do this as well but only per-single-server)
 	 * in case this action-records want to be synced with other servers,
 	* there should be even on other servers no actions with the same RandomID
 	*/
 	$NewRecord->RandomID = salt();
-		
-	$user = config::get('lib_mysqli_commands_instance')->GetUserBySession($_COOKIE["hyperhelp"]);
-	$NewRecord->username_id = $user->id; // it is better to not only rely on the username_id, usernames change, ids should not
+	$NewRecord->username_id = $user->RandomID; // it is better to not only rely on usernames but rather the user-unique RandomID
+
 	// getUserIDbyUsername($_REQUEST["username"],$users);
 
-	if(!isset($_REQUEST["when_date"]) || (empty($_REQUEST["when_date"])))
+	if(!isset($_REQUEST["when_date"]) || (empty($_REQUEST["when_date"])) || !(inputvalidation($_REQUEST["when_date"],"date")) )
 	{
 		$output["status_capture"] = "when_date is missing.";
 		return $output;
 	}
-	if(!isset($_REQUEST["when_time"]) || (empty($_REQUEST["when_time"])))
+
+	if(!isset($_REQUEST["when_time"]) || (empty($_REQUEST["when_time"])) || !(inputvalidation($_REQUEST["when_time"],"time")) )
 	{
-		$output["status_capture"] = "when_time is missing.";
+		$output["status_capture"] = "when_time is missing or invalid (no special chars allowed).";
 		return $output;
 	}
 
@@ -116,30 +110,25 @@ function capture($users)
 	
 	$NewRecord->howmany_minutes = $_REQUEST["howmany_minutes"];
 	
-	if(!isset($_REQUEST["howmany_minutes"]) || (empty($_REQUEST["howmany_minutes"])))
+	if(!isset($_REQUEST["howmany_minutes"]) || (empty($_REQUEST["howmany_minutes"])) || !(inputvalidation($_REQUEST["howmany_minutes"],"int_numbers")) )
 	{
-		$output["status_capture"] = "howmany_minutes is missing.";
+		$output["status_capture"] = "howmany_minutes is missing or invalid.";
 		return $output;
 	}
-
+	
 	$NewRecord->to_whom = $_REQUEST["to_whom"];
-	if(!isset($_REQUEST["to_whom"]) || (empty($_REQUEST["to_whom"])))
+	if(!isset($_REQUEST["to_whom"]) || (empty($_REQUEST["to_whom"])) || !(inputvalidation($_REQUEST["to_whom"],"username")) )
 	{
-		$output["status_capture"] = "to_whom is missing.";
+		$output["status_capture"] = "to_whom is missing or invalid.";
 		return $output;
 	}
 
 	$NewRecord->to_whom_id = getUserIDbyUsername($_REQUEST["to_whom"],$users); // it is better to not only rely on the username, usernames change, ids not
-	if(!isset($_REQUEST["to_whom"]) || (empty($_REQUEST["to_whom"])))
-	{
-		$output["status_capture"] = "to_whom is missing.";
-		return $output;
-	}
 
 	$NewRecord->what = $_REQUEST["what"];
-	if(!isset($_REQUEST["what"]) || (empty($_REQUEST["what"])))
+	if(!isset($_REQUEST["what"]) || (empty($_REQUEST["what"])) || !(inputvalidation($_REQUEST["what"],"text")) )
 	{
-		$output["status_capture"] = "what is missing.";
+		$output["status_capture"] = "what is missing or invalid (please enter only alpha-numeric characters, no special-chars allowed, please try again...";
 		return $output;
 	}
 
@@ -172,7 +161,7 @@ function capture($users)
 		}
 		else
 		{
-			// add action to database
+			// add action_template to database
 			$NewAction->description = $_REQUEST['what'];
 			$NewAction->users = $logged_in_user->username.",";
 			$NewAction = config::get('lib_mysqli_commands_instance')->RecordAdd("action_templates",$NewAction); // returns the record-object from database, containing a new, database generated id, that is important for editing/deleting the record later
@@ -348,7 +337,8 @@ if($refresh_page)
 													// uncomment this to only see the templates associated with the current logged in user
 													// $Actions_of_that_User = config::get('lib_mysqli_interface_instance')->query("SELECT * FROM `".config::get("db_name")."`.`actions` WHERE `users` LIKE '%".$logged_in_user->username."%';");
 													foreach($Actions_of_that_User as $key => $action) {
-														echo '<a href="capture.php?what_select='.$action->keyword.'&what_id='.$action->id.'"><div class="element_select">'.$action->keyword.'</div></a>'; 
+														echo '<a href="capture.php?what_select='.$action->keyword.'"><div class="element_select">'.$action->keyword.'</div></a>'; 
+														// echo '<a href="capture.php?what_select='.$action->keyword.'&what_id='.$action->id.'"><div class="element_select">'.$action->keyword.'</div></a>'; 
 													}
 												}
 												?>

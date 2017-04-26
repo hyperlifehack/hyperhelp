@@ -217,7 +217,7 @@ if($redirect)
 								<div class="column100">
 									<div class="line">
 										<a href="register2.php?SetProfilePicture=<?php if(isset($target_file)) echo $target_file ?>">
-											<div class="title button clickable">set this as my ProfilePicture</div>
+											<div class="title button clickable">set this as my ProfilePicture and proceed to login</div>
 										</a>
 									</div>
 								</div>

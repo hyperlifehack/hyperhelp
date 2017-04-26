@@ -166,7 +166,7 @@ if($valid_login)
 					</form>
 					<div class="column100">
 						<a href="register1.php">
-							<div class="button_div clickable" style="width: 100%;"><p>new here? -> register</p></div>
+							<div class="button_div clickable" style="width: 100%;"><p>register</p></div>
 						</a>
 					</div>
 				</div>

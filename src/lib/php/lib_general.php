@@ -199,3 +199,61 @@ function remember_value($value)
 		if(isset($_SESSION[$value])) echo $_SESSION[$value];
 	}
 }
+
+/* do various kinds of ROUGH input validation
+ * it is basically limiting user-input to special charset, rather than checking the exact format (YYYY-MM-DD or DD.MM.YYYY it does not care :-D)
+ * a really nice tool is: http://rubular.com/r/zpKXm2edcd */
+function inputvalidation($input,$type)
+{
+	$result = false;
+
+	// username can contain alphanumeric characters and _ - but no special chars
+	// valid: what_about_this_username, or-this-username, 8what_about_that
+	// invalid: but not this, or-this-one!
+	if($type == "username")
+	{
+		$result = preg_match('/^[A-Za-z0-9_\-]+$/', $input);
+	}
+
+	// text can contain alphanumeric characters and special chars like _ - , . : ;
+	// valid: This sentence should be ok. This sentence should be ok!
+	// invalid: @¹23
+	if($type == "text")
+	{
+		$result = preg_match('/^[A-Za-z0-9_\-\.\,\:\;\ ]+$/', $input);
+	}
+
+	// date - basically user can only enter numbers dots and minus (-)
+	// valid: 2017.01.01, 01.01.2017, 01-01-2017
+	// invalid: #01-01-2017
+	if($type == "date")
+	{
+		$result = preg_match('/^[0-9\.\-]+$/', $input);
+	}
+	
+	// time - basically user can only enter numbers, dots, minus (-) and colon (:)
+	// valid: 22:30, 22-30, 22.30
+	// invalid: 	
+	if($type == "time")
+	{
+		$result = preg_match('/^[0-9\.\-\:]+$/', $input);
+	}
+
+	// int_numbers - only whole numbers
+	// valid: 123
+	// invalid: 1.1 or 1,2 	
+	if($type == "int_numbers")
+	{
+		$result = preg_match('/^[0-9]+$/', $input);
+	}
+	
+	// float_numbers - only whole numbers
+	// valid: 123 or 1.1 or 1,2 but also ,,,
+	// invalid: xyz
+	if($type == "float_numbers")
+	{
+		$result = preg_match('^[0-9\.\,]+$', $input);
+	}
+
+	return $result;
+}

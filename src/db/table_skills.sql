@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 23, 2017 at 02:40 PM
+-- Generation Time: Apr 26, 2017 at 02:16 AM
 -- Server version: 5.5.31
 -- PHP Version: 5.4.4-14+deb7u3
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `skills` (
   `skill_description` text NOT NULL,
   `MinutesSpend` bigint(20) NOT NULL COMMENT 'Number of Minutes spend on this Skill',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
